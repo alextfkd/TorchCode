@@ -1,0 +1,147 @@
+"""A7 — TTA (Test-Time Augmentation, horizontal-flip averaging)."""
+
+PROBLEM = {
+    "id": "tta_hflip",
+    "number": 48,
+    "title": "TTA (Horizontal Flip Averaging)",
+    "difficulty": "Easy",
+    "fn_name": "tta_hflip",
+
+    "intro_md": (
+        "Implement **Test-Time Augmentation** with horizontal flip — run the model on both `x` and "
+        "`x.flip(-1)`, then **average the softmax probabilities** (not the logits). A free 0.3–1.0% "
+        "accuracy bump for image classification.\n\n"
+        "### Standard practice — probability-space averaging\n"
+        "Averaging *after* softmax (rather than averaging logits and then softmaxing) treats each "
+        "TTA branch as an independent classifier and ensembles their predictions. This is the "
+        "convention in most Kaggle / paper implementations.\n"
+    ),
+
+    "signature": (
+        "def tta_hflip(model, x):\n"
+        "    # model: nn.Module taking (B, C, H, W) → (B, num_classes) logits\n"
+        "    # x: (B, C, H, W) input\n"
+        "    # Returns: (B, num_classes) averaged probabilities"
+    ),
+
+    "rules": [
+        "Apply softmax **before** averaging (probability-space ensemble, not logit-space)",
+        "Wrap inference in `torch.no_grad()` — no autograd tape during TTA",
+        "Returns *probabilities* (each row sums to 1), not logits",
+        "Do NOT modify model state (assume caller already called `model.eval()`)",
+    ],
+
+    "imports": "import torch\nimport torch.nn as nn",
+
+    "template_body": (
+        "def tta_hflip(model, x):\n"
+        "    pass  # softmax(model(x)) + softmax(model(x.flip(-1))) / 2, all under no_grad"
+    ),
+
+    "solution_body": (
+        "def tta_hflip(model, x):\n"
+        "    with torch.no_grad():\n"
+        "        p1 = torch.softmax(model(x), dim=-1)\n"
+        "        p2 = torch.softmax(model(x.flip(-1)), dim=-1)\n"
+        "    return (p1 + p2) / 2"
+    ),
+
+    "demo_code": (
+        "import torch\n"
+        "import torch.nn as nn\n"
+        "torch.manual_seed(0)\n"
+        "\n"
+        "model = nn.Sequential(\n"
+        "    nn.Conv2d(3, 8, 3, padding=1),\n"
+        "    nn.AdaptiveAvgPool2d(1),\n"
+        "    nn.Flatten(),\n"
+        "    nn.Linear(8, 10),\n"
+        ")\n"
+        "model.eval()\n"
+        "x = torch.randn(2, 3, 16, 16)\n"
+        "p = tta_hflip(model, x)\n"
+        "print('Output shape:', p.shape, '| row sums:', p.sum(dim=-1).tolist())"
+    ),
+
+    "hint": (
+        "Two forward passes: `model(x)` and `model(x.flip(-1))`. Convert each to probabilities "
+        "with `softmax(dim=-1)`, then average. Wrap in `torch.no_grad()` since this is inference."
+    ),
+
+    "tests": [
+        {
+            "name": "Output shape (B, num_classes)",
+            "code": (
+                "\nimport torch\n"
+                "import torch.nn as nn\n"
+                "torch.manual_seed(0)\n"
+                "model = nn.Sequential(nn.Conv2d(3, 8, 3, padding=1), nn.AdaptiveAvgPool2d(1), nn.Flatten(), nn.Linear(8, 10))\n"
+                "model.eval()\n"
+                "x = torch.randn(4, 3, 16, 16)\n"
+                "out = {fn}(model, x)\n"
+                "assert out.shape == (4, 10), f'Shape: {out.shape}'\n"
+            ),
+        },
+        {
+            "name": "Output is a probability distribution (rows sum to 1, non-negative)",
+            "code": (
+                "\nimport torch\n"
+                "import torch.nn as nn\n"
+                "torch.manual_seed(0)\n"
+                "model = nn.Sequential(nn.Conv2d(3, 8, 3, padding=1), nn.AdaptiveAvgPool2d(1), nn.Flatten(), nn.Linear(8, 10))\n"
+                "model.eval()\n"
+                "x = torch.randn(3, 3, 8, 8)\n"
+                "out = {fn}(model, x)\n"
+                "sums = out.sum(dim=-1)\n"
+                "assert torch.allclose(sums, torch.ones_like(sums), atol=1e-5), f'Row sums: {sums.tolist()}'\n"
+                "assert (out >= 0).all(), 'Probabilities must be non-negative'\n"
+            ),
+        },
+        {
+            "name": "Equals averaged softmax of model(x) and model(flip(x))",
+            "code": (
+                "\nimport torch\n"
+                "import torch.nn as nn\n"
+                "import torch.nn.functional as F\n"
+                "torch.manual_seed(0)\n"
+                "model = nn.Sequential(nn.Conv2d(3, 8, 3, padding=1), nn.AdaptiveAvgPool2d(1), nn.Flatten(), nn.Linear(8, 10))\n"
+                "model.eval()\n"
+                "x = torch.randn(2, 3, 8, 8)\n"
+                "out = {fn}(model, x)\n"
+                "with torch.no_grad():\n"
+                "    expected = (F.softmax(model(x), dim=-1) + F.softmax(model(x.flip(-1)), dim=-1)) / 2\n"
+                "assert torch.allclose(out, expected, atol=1e-6), f'Max diff: {(out-expected).abs().max():.6f}'\n"
+            ),
+        },
+        {
+            "name": "Invariant to flipping the input (tta(x) == tta(flip(x)))",
+            "code": (
+                "\nimport torch\n"
+                "import torch.nn as nn\n"
+                "torch.manual_seed(0)\n"
+                "model = nn.Sequential(nn.Conv2d(3, 8, 3, padding=1), nn.AdaptiveAvgPool2d(1), nn.Flatten(), nn.Linear(8, 10))\n"
+                "model.eval()\n"
+                "x = torch.randn(2, 3, 8, 8)\n"
+                "a = {fn}(model, x)\n"
+                "b = {fn}(model, x.flip(-1))\n"
+                "assert torch.allclose(a, b, atol=1e-6), 'TTA must be invariant to flipping the input'\n"
+            ),
+        },
+        {
+            "name": "Differs from single-forward for asymmetric input",
+            "code": (
+                "\nimport torch\n"
+                "import torch.nn as nn\n"
+                "import torch.nn.functional as F\n"
+                "torch.manual_seed(0)\n"
+                "model = nn.Sequential(nn.Conv2d(3, 8, 3, padding=1), nn.AdaptiveAvgPool2d(1), nn.Flatten(), nn.Linear(8, 10))\n"
+                "model.eval()\n"
+                "x = torch.randn(2, 3, 8, 8)\n"
+                "out_tta = {fn}(model, x)\n"
+                "with torch.no_grad():\n"
+                "    out_single = F.softmax(model(x), dim=-1)\n"
+                "assert not torch.allclose(out_tta, out_single, atol=1e-4), 'TTA result should differ from single forward'\n"
+            ),
+        },
+    ],
+}
