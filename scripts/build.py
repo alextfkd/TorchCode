@@ -83,7 +83,7 @@ def load_spec(spec_path: Path) -> dict[str, Any]:
     return mod.PROBLEM
 
 
-def render_intro(p: dict[str, Any], folder: str, filename: str) -> str:
+def render_intro(p: dict[str, Any], folder: str, filename: str, is_solution: bool = False) -> str:
     import re as _re
     emoji = DIFFICULTY_EMOJI.get(p["difficulty"], "")
     badge = f"[![Open In Colab]({BADGE_IMG})]({colab_url(folder, filename)})"
@@ -121,18 +121,18 @@ def render_intro(p: dict[str, Any], folder: str, filename: str) -> str:
     else:
         intro_combined = intro_text
 
+    if is_solution:
+        title_line = f"# ✅ Solution: {p['title']}"
+    else:
+        title_line = f"# {emoji} {p['difficulty']}: {p['title']}"
+
     return (
         f"{badge}\n\n"
-        f"# {emoji} {p['difficulty']}: {p['title']}\n\n"
+        f"{title_line}\n\n"
         f"{intro_combined}\n\n"
         f"### Signature\n```python\n{p['signature']}\n```\n\n"
         f"### Rules\n{rules_md}"
     )
-
-
-def render_solution_intro(p: dict[str, Any], folder: str, filename: str) -> str:
-    badge = f"[![Open In Colab]({BADGE_IMG})]({colab_url(folder, filename)})"
-    return f"{badge}\n\n# Solution: {p['title']}\n\nReference solution."
 
 
 def render_solution_link(solution_filename: str) -> str:
@@ -182,7 +182,7 @@ def write_template(p: dict[str, Any]) -> Path:
 def write_solution(p: dict[str, Any]) -> Path:
     filename = f"{p['number']:02d}_{p['id']}_solution.ipynb"
     cells = [
-        md_cell(render_solution_intro(p, "solutions", filename)),
+        md_cell(render_intro(p, "solutions", filename, is_solution=True)),
         code_cell(COLAB_INSTALL),
         code_cell(p["imports"]),
         code_cell(f"# ✅ SOLUTION\n\n{p['solution_body']}"),
