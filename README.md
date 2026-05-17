@@ -64,14 +64,30 @@ make run                                # Docker 起動
 # ブラウザで http://localhost:8888 → practice/W2/ に移動
 ```
 
-### 自分で問題を増やす / マッピングを変える
+### メンテ・拡張手順
+
+変更タイプごとに対応する再生成スクリプトを走らせる：
 
 | やりたいこと | 編集対象 | 再生成コマンド |
 |------|----------|---------------|
 | 新規問題を追加 | `problem_specs/{id}.py` を新規作成 | `python scripts/build.py --verify` |
-| 既存問題の解説/テストを修正 | `problem_specs/{id}.py` | `python scripts/build.py --verify` |
+| spec 問題（#41-56）の説明/テスト/解答を修正 | `problem_specs/{id}.py` | `python scripts/build.py --verify` |
+| upstream 問題（#01-40）の intro 修正 | `templates/{file}.ipynb` の cell 0 | `python scripts/sync_solutions.py` |
 | 週マッピング変更 | `scripts/week_mapping.py` | `python scripts/build_weeks.py` |
-| 週フォルダを完全リセット | （上記） | `python scripts/build_weeks.py --reset` |
+| 週フォルダ完全リセット（in-progress 破棄）| （上記） | `python scripts/build_weeks.py --reset` |
+| 全 56 解答の健全性チェック | （なし） | `python scripts/verify_all_solutions.py` |
+
+### ソースと生成物の対応
+
+このリポジトリは spec-driven (16 問) と upstream-hand-written (40 問) のハイブリッド。編集禁止のファイルを直接いじると次の再生成で消える。
+
+| ソース（編集 OK） | 生成物（編集禁止、再生成される） |
+|------|------|
+| `problem_specs/*.py` (16 問) | `torch_judge/tasks/{id}.py` + `templates/{4,5}*.ipynb` + `solutions/{4,5}*_solution.ipynb` |
+| `templates/0*-40_*.ipynb` (40 既存) cell 0 | 対応する `solutions/*_solution.ipynb` の cell 0 (intro 部分のみ、code は upstream のまま) |
+| `scripts/week_mapping.py` | `practice/W{n}/`, `practice/W{n}/README.md`, `practice/README.md` |
+
+大きな変更後は `verify_all_solutions.py` で 56 解答が全 pass することを確認するのが安全。
 
 詳細は下記 [Architecture](#%EF%B8%8F-architecture) / [Adding Your Own Problems](#-adding-your-own-problems) も参照。
 
