@@ -8,7 +8,7 @@ INSTALL_CELL_SOURCE = [
     "# Install torch-judge in Colab (no-op in JupyterLab/Docker)\n",
     "try:\n",
     "    import google.colab\n",
-    "    get_ipython().run_line_magic('pip', 'install -q torch-judge')\n",
+    "    get_ipython().run_line_magic('pip', 'install -q --force-reinstall --no-deps git+https://github.com/alextfkd/TorchCode.git')\n",
     "except ImportError:\n",
     "    pass\n",
 ]

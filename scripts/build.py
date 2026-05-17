@@ -34,7 +34,7 @@ DIFFICULTY_EMOJI = {"Easy": "🟢", "Medium": "🟠", "Hard": "🔴"}
 COLAB_INSTALL = """# Install torch-judge in Colab (no-op in JupyterLab/Docker)
 try:
     import google.colab
-    get_ipython().run_line_magic('pip', 'install -q torch-judge')
+    get_ipython().run_line_magic('pip', 'install -q --force-reinstall --no-deps git+https://github.com/alextfkd/TorchCode.git')
 except ImportError:
     pass"""
 

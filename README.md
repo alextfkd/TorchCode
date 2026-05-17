@@ -67,11 +67,13 @@ Or open any problem directly in Google Colab — every notebook has an [![Open I
 
 ### Option 0b — Use the judge in Colab (pip)
 
-In Google Colab, install the judge from PyPI so you can run `check(...)` without cloning the repo:
+In Google Colab, install the judge from this fork's git URL (so you get the full task set, including the additions in this fork that aren't on the upstream PyPI package):
 
 ```bash
-!pip install torch-judge
+!pip install -q --force-reinstall --no-deps git+https://github.com/alextfkd/TorchCode.git
 ```
+
+(The notebook templates already have this install cell at the top — just **Run All** in Colab.)
 
 Then in a notebook cell:
 
