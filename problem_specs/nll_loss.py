@@ -8,13 +8,12 @@ PROBLEM = {
     "fn_name": "my_nll_loss",
 
     "intro_md": (
-        "Implement **NLL loss** — the second half of cross-entropy. The input is **already** "
-        "`log_softmax`'d probabilities; this function picks the log-prob at each target class "
-        "and averages the negative.\n\n"
+        "**NLL Loss** を実装する。cross-entropy の後半パート。入力は **既に** `log_softmax` "
+        "済みの確率で、target クラスの log-prob を pick して負の平均を取る。\n\n"
         "$$L = -\\frac{1}{B} \\sum_b \\log p_b[y_b]$$\n\n"
-        "### Why PyTorch separates `log_softmax` + `nll_loss`\n"
-        "- Reuse the same `log_softmax` output for both loss and analysis\n"
-        "- Apply NLL to log-probabilities from anywhere (mixture models, normalizing flows)\n"
+        "### なぜ PyTorch は log_softmax + nll_loss を分離してる\n"
+        "- 同じ `log_softmax` を loss と分析の両方で使い回せる\n"
+        "- softmax 以外から来る log-prob にも NLL を適用できる（mixture model, normalizing flow など）\n"
         "- `CrossEntropyLoss(logits, targets) == nll_loss(log_softmax(logits), targets)`\n"
     ),
 
@@ -26,17 +25,17 @@ PROBLEM = {
     ),
 
     "rules": [
-        "Do **NOT** use `F.nll_loss` or `nn.NLLLoss`",
-        "Input is already `log_softmax` — don't recompute softmax",
-        "Mean reduction (scalar output)",
-        "Use advanced indexing: `log_probs[arange(B), targets]`",
+        "`F.nll_loss` や `nn.NLLLoss` は **使わない**",
+        "Input は既に `log_softmax` 済み — softmax を再計算しない",
+        "mean reduction（scalar output）",
+        "Advanced indexing: `log_probs[arange(B), targets]`",
     ],
 
     "imports": "import torch",
 
     "template_body": (
         "def my_nll_loss(log_probs, targets):\n"
-        "    pass  # gather log_probs[arange(B), targets], negate, mean"
+        "    pass  # log_probs[arange(B), targets] を gather、負にして mean"
     ),
 
     "solution_body": (
@@ -58,8 +57,8 @@ PROBLEM = {
     ),
 
     "hint": (
-        "Use advanced indexing: `log_probs[torch.arange(B), targets]` gives the log-prob at the "
-        "correct class for each sample. Negate and take mean."
+        "Advanced indexing: `log_probs[torch.arange(B), targets]` で各 sample の正解クラスの "
+        "log-prob を取得。負にして mean。"
     ),
 
     "tests": [

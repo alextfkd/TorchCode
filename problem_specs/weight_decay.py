@@ -8,17 +8,16 @@ PROBLEM = {
     "fn_name": "apply_weight_decay",
 
     "intro_md": (
-        "Implement **weight decay** — the L2 regularization term folded into the gradient before "
-        "the optimizer step. This is the SGD/L2 convention; AdamW uses a different (decoupled) "
-        "formulation (see problem 56).\n\n"
-        "### L2-in-gradient form (this problem)\n"
+        "**Weight decay** を実装する。L2 正則化項を optimizer step の **前** に gradient に "
+        "足す（SGD/L2 規約）。AdamW は別の (decoupled) formulation を使う (#56 参照)。\n\n"
+        "### L2-in-gradient 形式（この問題）\n"
         "$$g \\leftarrow g + \\lambda \\cdot p$$\n\n"
-        "Equivalent to adding `(λ/2)·‖p‖²` to the loss and letting autograd add `λ·p` to the "
-        "gradient. Doing it directly in the optimizer step skips the extra graph node.\n\n"
-        "### vs. AdamW's decoupled form\n"
+        "loss に `(λ/2)·‖p‖²` を足して autograd に gradient へ `λ·p` を足させるのと等価。"
+        "optimizer step で直接やればグラフ node が増えない分速い。\n\n"
+        "### vs. AdamW の decoupled 形式\n"
         "$$p \\leftarrow p \\cdot (1 - \\text{lr} \\cdot \\lambda)$$\n"
-        "Applied to the **param** directly, not via gradient. Loshchilov & Hutter (2019) showed "
-        "this works better with adaptive optimizers.\n"
+        "gradient 経由じゃなく **param** に直接適用。Loshchilov & Hutter (2019) が adaptive "
+        "optimizer ではこっちが効くと示した。\n"
     ),
 
     "signature": (
@@ -30,18 +29,18 @@ PROBLEM = {
     ),
 
     "rules": [
-        "**In-place**: modifies `p.grad` directly, no return value",
-        "Accept a single tensor OR a list/iterable",
-        "Skip params with `p.grad is None`",
-        "When `weight_decay == 0`, do nothing",
-        "Wrap in `@torch.no_grad()` — we're modifying `.grad`, not building a graph",
+        "**In-place**: `p.grad` を直接 modify、戻り値なし",
+        "Single tensor / list / iterable いずれも受け付ける",
+        "`p.grad is None` の param は skip",
+        "`weight_decay == 0` なら何もしない",
+        "`@torch.no_grad()` で wrap — `.grad` を modify するだけ、autograd 不要",
     ],
 
     "imports": "import torch",
 
     "template_body": (
         "def apply_weight_decay(params, weight_decay):\n"
-        "    pass  # under no_grad: for each p with p.grad, do p.grad.add_(p, alpha=weight_decay)"
+        "    pass  # no_grad 下で: p.grad がある各 p に対し p.grad.add_(p, alpha=weight_decay)"
     ),
 
     "solution_body": (
@@ -65,9 +64,9 @@ PROBLEM = {
     ),
 
     "hint": (
-        "Single-tensor case: wrap in a list. `weight_decay=0` fast path. For each param: "
-        "`p.grad.add_(p, alpha=weight_decay)` is equivalent to `p.grad += weight_decay * p`. "
-        "Use `@torch.no_grad()` since we're modifying `.grad` outside autograd."
+        "Single tensor case は list で wrap。`weight_decay=0` の fast path。各 param で "
+        "`p.grad.add_(p, alpha=weight_decay)` は `p.grad += weight_decay * p` と等価。"
+        "`.grad` を autograd 外で modify するので `@torch.no_grad()`。"
     ),
 
     "tests": [

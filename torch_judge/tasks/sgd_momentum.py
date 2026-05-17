@@ -4,7 +4,7 @@ TASK = {
     "title": "SGD with Momentum",
     "difficulty": "Medium",
     "function_name": "MySGDMomentum",
-    "hint": "Store params, lr, momentum, and velocity buffers (`zeros_like` each param). In `step()`: wrap with `@torch.no_grad()`. For each `(p, v)` pair: `v.mul_(momentum).add_(p.grad)` then `p.add_(v, alpha=-lr)`. Skip params with `p.grad is None`.",
+    "hint": "params, lr, momentum, velocity buffer (`zeros_like` each param) を保持。`step()` は `@torch.no_grad()` で。各 `(p, v)` ペアで `v.mul_(momentum).add_(p.grad)` → `p.add_(v, alpha=-lr)`。`p.grad is None` の param は skip。",
     "tests": [
         {
             "name": "Has step() and zero_grad() methods",

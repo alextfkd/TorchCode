@@ -8,13 +8,13 @@ PROBLEM = {
     "fn_name": "MySGDMomentum",
 
     "intro_md": (
-        "Implement **SGD with Momentum** — the optimizer everyone learns first, still competitive "
-        "with Adam for many vision tasks (ResNet, VGG).\n\n"
-        "### Update rule (PyTorch convention — no `(1-μ)` factor on g)\n"
+        "**SGD with Momentum** を実装する。誰もが最初に学ぶ optimizer、今でも CNN "
+        "(ResNet, VGG) では Adam と競合する。\n\n"
+        "### Update rule (PyTorch 規約 — `(1-μ)` factor は **ない**)\n"
         "$$v_{t+1} = \\mu \\cdot v_t + g_t$$\n"
         "$$p_{t+1} = p_t - \\text{lr} \\cdot v_{t+1}$$\n\n"
-        "Watch out: the classical Heavy-Ball / EMA form uses `μ*v + (1-μ)*g`. PyTorch's `torch.optim.SGD` "
-        "uses **no `(1-μ)` factor**. Match PyTorch's convention so the matching test passes.\n"
+        "注意: 古典的な Heavy-Ball / EMA 形式は `μ*v + (1-μ)*g`。`torch.optim.SGD` の規約は "
+        "**`(1-μ)` factor がない**。matching test を通すため PyTorch 規約に合わせる。\n"
     ),
 
     "signature": (
@@ -25,12 +25,12 @@ PROBLEM = {
     ),
 
     "rules": [
-        "Do **NOT** use `torch.optim.SGD`",
-        "Implement `step()` and `zero_grad()` methods",
-        "Velocity update: `v = momentum * v + p.grad` (PyTorch convention — no `(1-μ)` factor)",
+        "`torch.optim.SGD` は **使わない**",
+        "`step()` と `zero_grad()` の 2 メソッド実装",
+        "Velocity update: `v = momentum * v + p.grad`（PyTorch 規約 — `(1-μ)` factor なし）",
         "Param update: `p -= lr * v`",
-        "Initialize velocity buffers to zeros (one per param)",
-        "Wrap `step()` in `@torch.no_grad()` (or manual context)",
+        "Velocity buffer を zero で初期化（param 1個あたり 1個）",
+        "`step()` を `@torch.no_grad()` で wrap（または手動 context）",
     ],
 
     "imports": "import torch",
@@ -38,13 +38,13 @@ PROBLEM = {
     "template_body": (
         "class MySGDMomentum:\n"
         "    def __init__(self, params, lr, momentum=0.9):\n"
-        "        pass  # store params/lr/momentum, init velocity buffers as zeros_like(p)\n"
+        "        pass  # params/lr/momentum を保存、velocity buffer を zeros_like(p) で初期化\n"
         "    \n"
         "    def zero_grad(self):\n"
-        "        pass  # for each param, zero out p.grad (if not None)\n"
+        "        pass  # 各 param について p.grad を 0 化（None でない場合）\n"
         "    \n"
         "    def step(self):\n"
-        "        pass  # for each (p, v): v = μ*v + p.grad; p -= lr * v"
+        "        pass  # 各 (p, v) について: v = μ*v + p.grad; p -= lr * v"
     ),
 
     "solution_body": (
@@ -84,10 +84,10 @@ PROBLEM = {
     ),
 
     "hint": (
-        "Store params, lr, momentum, and velocity buffers (`zeros_like` each param). "
-        "In `step()`: wrap with `@torch.no_grad()`. For each `(p, v)` pair: "
-        "`v.mul_(momentum).add_(p.grad)` then `p.add_(v, alpha=-lr)`. "
-        "Skip params with `p.grad is None`."
+        "params, lr, momentum, velocity buffer (`zeros_like` each param) を保持。"
+        "`step()` は `@torch.no_grad()` で。各 `(p, v)` ペアで "
+        "`v.mul_(momentum).add_(p.grad)` → `p.add_(v, alpha=-lr)`。"
+        "`p.grad is None` の param は skip。"
     ),
 
     "tests": [

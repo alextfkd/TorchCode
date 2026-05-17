@@ -4,7 +4,7 @@ TASK = {
     "title": "Label Smoothing Cross-Entropy",
     "difficulty": "Easy",
     "function_name": "label_smoothing_ce",
-    "hint": "Use `F.log_softmax(logits, dim=-1)`. Build `target_dist = one_hot * (1 - smoothing) + smoothing / K` — true class gets `(1-ε) + ε/K`, others get `ε/K`. Loss = `-(target_dist * log_probs).sum(-1).mean()`.",
+    "hint": "`F.log_softmax(logits, dim=-1)`。target dist は `one_hot * (1 - smoothing) + smoothing / K` で構築 — 正解クラスは `(1-ε) + ε/K`、それ以外は `ε/K`。Loss = `-(target_dist * log_probs).sum(-1).mean()`。",
     "tests": [
         {
             "name": "Returns scalar",

@@ -8,11 +8,11 @@ PROBLEM = {
     "fn_name": "random_horizontal_flip",
 
     "intro_md": (
-        "Implement **random horizontal flip** — the canonical augmentation for natural images "
-        "(CIFAR-10, ImageNet). Each sample in a batch flips independently with probability `p`.\n\n"
+        "**Random Horizontal Flip** を実装する。自然画像 (CIFAR-10, ImageNet) で定番の "
+        "augmentation。batch 入力では各 sample が独立に確率 `p` で flip される。\n\n"
         "### Example\n```\n"
-        "x: (3, 32, 32)         → maybe flipped (50% chance with p=0.5)\n"
-        "x: (B=8, 3, 32, 32)    → each of 8 samples flipped independently\n"
+        "x: (3, 32, 32)         → 確率 p=0.5 で flip\n"
+        "x: (B=8, 3, 32, 32)    → 8 sample が独立に flip\n"
         "```"
     ),
 
@@ -24,18 +24,18 @@ PROBLEM = {
     ),
 
     "rules": [
-        "Do **NOT** use `torchvision.transforms.RandomHorizontalFlip` or `T.functional.hflip`",
-        "Must support both `(C, H, W)` and `(B, C, H, W)` inputs",
-        "For batched input, each sample must flip **independently**",
-        "`p=0` → identity, `p=1` → all samples flipped",
-        "Must preserve `dtype` and `device`",
+        "`torchvision.transforms.RandomHorizontalFlip` や `T.functional.hflip` は **使わない**",
+        "`(C, H, W)` と `(B, C, H, W)` 両方をサポート",
+        "batch 入力では各 sample が **独立** に flip",
+        "`p=0` → 恒等、`p=1` → 全 sample が flip",
+        "`dtype` と `device` を保つ",
     ],
 
     "imports": "import torch",
 
     "template_body": (
         "def random_horizontal_flip(x, p=0.5):\n"
-        "    pass  # for (B, C, H, W): per-sample Bernoulli mask, then flip(-1) on selected"
+        "    pass  # (B, C, H, W) の場合: per-sample Bernoulli mask → 選ばれた sample を flip(-1)"
     ),
 
     "solution_body": (
@@ -44,7 +44,7 @@ PROBLEM = {
         "        if torch.rand(1).item() < p:\n"
         "            return x.flip(-1)\n"
         "        return x\n"
-        "    # (B, C, H, W) — per-sample independent mask\n"
+        "    # (B, C, H, W) — per-sample 独立な mask\n"
         "    B = x.shape[0]\n"
         "    mask = torch.rand(B, device=x.device) < p\n"
         "    out = x.clone()\n"
@@ -62,9 +62,9 @@ PROBLEM = {
     ),
 
     "hint": (
-        "For batched input, sample a Bernoulli mask of length B (`torch.rand(B) < p`), then "
-        "flip x along the last dim only for the selected samples. Use `x.clone()` for the output and "
-        "write back with fancy indexing: `out[mask] = x[mask].flip(-1)`."
+        "batch 入力では長さ B の Bernoulli mask (`torch.rand(B) < p`) をサンプルし、"
+        "選ばれた sample だけ最後の dim で flip。`x.clone()` を作って "
+        "`out[mask] = x[mask].flip(-1)` の fancy indexing で書き戻す。"
     ),
 
     "tests": [

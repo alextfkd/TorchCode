@@ -8,15 +8,15 @@ PROBLEM = {
     "fn_name": "my_normalize",
 
     "intro_md": (
-        "Implement **per-channel normalization** — the very first transform in nearly every "
-        "CNN training pipeline (CIFAR-10, ImageNet, ...).\n\n"
+        "**channel ごとの正規化** を実装する。CNN 学習パイプラインで一番最初に走る "
+        "transform（CIFAR-10, ImageNet など）。\n\n"
         "$$\\text{out}[c, h, w] = \\frac{x[c, h, w] - \\mu[c]}{\\sigma[c]}$$\n\n"
         "### Example\n"
         "```\n"
         "x       : (3, 32, 32) float image in [0, 1]\n"
-        "mean    : (0.4914, 0.4822, 0.4465)   # CIFAR-10 channel means\n"
-        "std     : (0.2470, 0.2435, 0.2616)   # CIFAR-10 channel stds\n"
-        "→ (3, 32, 32) with each channel z-scored\n"
+        "mean    : (0.4914, 0.4822, 0.4465)   # CIFAR-10 の channel 平均\n"
+        "std     : (0.2470, 0.2435, 0.2616)   # CIFAR-10 の channel 標準偏差\n"
+        "→ (3, 32, 32)、各 channel が z-score 化された結果\n"
         "```"
     ),
 
@@ -28,25 +28,25 @@ PROBLEM = {
     ),
 
     "rules": [
-        "Do **NOT** use `torchvision.transforms.Normalize` or `T.functional.normalize`",
-        "Must support both `(C, H, W)` and `(B, C, H, W)` inputs",
-        "Accept tuple, list, or tensor for `mean` and `std`",
-        "Must preserve `dtype` and `device` of `x`",
-        "Gradients must flow back to `x`",
+        "`torchvision.transforms.Normalize` や `T.functional.normalize` は **使わない**",
+        "`(C, H, W)` と `(B, C, H, W)` 両方の入力をサポート",
+        "`mean`, `std` は tuple / list / tensor のいずれも受け付ける",
+        "`x` の `dtype` と `device` を保つ",
+        "勾配が `x` に流れること",
     ],
 
     "imports": "import torch",
 
     "template_body": (
         "def my_normalize(x, mean, std):\n"
-        "    pass  # broadcast mean/std to (C, 1, 1) then (x - μ) / σ"
+        "    pass  # mean/std を (C, 1, 1) に broadcast してから (x - μ) / σ"
     ),
 
     "solution_body": (
         "def my_normalize(x, mean, std):\n"
         "    mean = torch.as_tensor(mean, dtype=x.dtype, device=x.device)\n"
         "    std = torch.as_tensor(std, dtype=x.dtype, device=x.device)\n"
-        "    # Reshape to (C, 1, 1) — broadcasts cleanly with both (C,H,W) and (B,C,H,W)\n"
+        "    # (C, 1, 1) に reshape — (C, H, W) と (B, C, H, W) どちらでも broadcast が効く\n"
         "    shape = [-1, 1, 1]\n"
         "    return (x - mean.view(shape)) / std.view(shape)"
     ),
@@ -65,9 +65,9 @@ PROBLEM = {
     ),
 
     "hint": (
-        "Convert mean/std to tensors with the same dtype/device as x (torch.as_tensor handles "
-        "tuple/list/tensor uniformly), then reshape to (C, 1, 1) so broadcasting works for both "
-        "(C, H, W) and (B, C, H, W) inputs."
+        "`torch.as_tensor` で mean/std を x と同じ dtype/device の tensor に変換"
+        "（tuple/list/tensor を一律で扱える）。それを `(C, 1, 1)` に reshape すれば "
+        "`(C, H, W)` と `(B, C, H, W)` 両方で broadcast が効く。"
     ),
 
     "tests": [

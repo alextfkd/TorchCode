@@ -8,12 +8,12 @@ PROBLEM = {
     "fn_name": "my_avg_pool2d",
 
     "intro_md": (
-        "Implement **2D average pooling** from scratch — the smoother alternative to max pooling, "
-        "and the building block of Global Average Pooling.\n\n"
+        "**2D Average Pooling** を実装する。max pooling の smooth 版で、Global Average Pooling "
+        "の構成要素でもある。\n\n"
         "$$\\text{out}[b, c, i, j] = \\frac{1}{kH \\cdot kW} \\sum_{(p,q) \\in \\text{window}(i,j)} x[b, c, p, q]$$\n\n"
-        "### Difference from MaxPool\n"
-        "- Average is **smooth** (differentiable everywhere); max is non-smooth\n"
-        "- Padding uses **zeros** (NOT `-inf`), and zero-pad values are **included** in the mean (PyTorch default)\n"
+        "### MaxPool との違い\n"
+        "- 平均は **smooth**（どこでも微分可能）、max は non-smooth\n"
+        "- Padding は **zero** で行う（`-inf` ではない）、zero-pad 値は **平均に含まれる**（PyTorch default）\n"
     ),
 
     "signature": (
@@ -23,17 +23,17 @@ PROBLEM = {
     ),
 
     "rules": [
-        "Do **NOT** use `F.avg_pool2d`, `nn.AvgPool2d`, or `F.adaptive_avg_pool2d`",
-        "`unfold`, `reshape`, `.mean()` are allowed",
-        "`stride` defaults to `kernel_size` (non-overlapping windows)",
-        "For `padding > 0`, pad with **zeros** (PyTorch's `count_include_pad=True` default)",
+        "`F.avg_pool2d`, `nn.AvgPool2d`, `F.adaptive_avg_pool2d` は **使わない**",
+        "`unfold`, `reshape`, `.mean()` は許可",
+        "`stride` の default は `kernel_size` (non-overlapping windows)",
+        "`padding > 0` の場合、**zero** で pad（PyTorch の `count_include_pad=True` default）",
     ],
 
     "imports": "import torch\nimport torch.nn.functional as F",
 
     "template_body": (
         "def my_avg_pool2d(x, kernel_size, stride=None, padding=0):\n"
-        "    pass  # F.pad with zeros, unfold(2,k,s).unfold(3,k,s), then .mean over the window dims"
+        "    pass  # F.pad で zero pad、unfold(2,k,s).unfold(3,k,s)、window dim で .mean"
     ),
 
     "solution_body": (
@@ -55,9 +55,9 @@ PROBLEM = {
     ),
 
     "hint": (
-        "Same `unfold(2, k, s).unfold(3, k, s)` trick as MaxPool, but use `.mean(dim=(-1, -2))` "
-        "instead of `.amax(...)`. Pad with zeros (default `F.pad`), and the zero-pad values get "
-        "included in the mean — that matches PyTorch's `count_include_pad=True` default."
+        "MaxPool と同じ `unfold(2, k, s).unfold(3, k, s)` を使うが、`.amax(...)` の代わりに "
+        "`.mean(dim=(-1, -2))`。zero pad で `F.pad`（default）、zero-pad 値は mean に含まれる — "
+        "PyTorch の `count_include_pad=True` default 挙動。"
     ),
 
     "tests": [

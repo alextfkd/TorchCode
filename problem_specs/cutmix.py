@@ -8,14 +8,12 @@ PROBLEM = {
     "fn_name": "cutmix",
 
     "intro_md": (
-        "Implement **CutMix** (Yun et al. 2019) — instead of blending pixel values like Mixup, "
-        "cut a rectangle from one image and **paste** it onto another. Labels are mixed by the "
-        "actual area fraction of the paste.\n\n"
-        "### Why area-based λ (interview trap)\n"
-        "The rectangle is centered at a random position and **may be clipped at the image boundary**. "
-        "So the *sampled* λ from Beta(α,α) and the *actual* area fraction differ. Always recompute "
-        "λ from the realized rectangle area before returning it — this is the part interviewers "
-        "specifically grill on.\n"
+        "**CutMix** (Yun et al. 2019) を実装する。Mixup と違って pixel 値を blend するのではなく、"
+        "ある画像から矩形を **切り取って貼る**。label は paste 領域の面積比で混ぜる。\n\n"
+        "### area-based λ (interview trap)\n"
+        "矩形はランダムな中心位置に置かれて、**画像境界でクリップされる**ことがある。なので "
+        "Beta(α,α) からサンプルした λ と、**実際の**面積比は一致しない。clipping 後の実面積から "
+        "λ を再計算してから return すること — interview で grill される所。\n"
     ),
 
     "signature": (
@@ -28,19 +26,19 @@ PROBLEM = {
     ),
 
     "rules": [
-        "Sample `λ ~ Beta(α, α)`, derive cut size `cut_h = int(H * sqrt(1 - λ))`, similarly `cut_w`",
-        "Random center `(cy, cx)` uniformly in `[0, H) × [0, W)`",
-        "Clip the rectangle to image bounds with `y1 = max(0, cy - cut_h//2)` etc.",
-        "Paste `x[perm, :, y1:y2, x1:x2]` into the cut region of `x_mixed`",
-        "**Recompute λ** as `1 - (y2-y1)*(x2-x1) / (H*W)` before returning",
+        "`λ ~ Beta(α, α)` をサンプル、cut size は `cut_h = int(H * sqrt(1 - λ))`, 同様に `cut_w`",
+        "中心 `(cy, cx)` を `[0, H) × [0, W)` から uniform サンプル",
+        "矩形を画像 bounds で clip: `y1 = max(0, cy - cut_h//2)` など",
+        "`x[perm, :, y1:y2, x1:x2]` を `x_mixed` の同じ slice にコピー",
+        "**λ を再計算** `1 - (y2-y1)*(x2-x1) / (H*W)` してから return",
     ],
 
     "imports": "import torch",
 
     "template_body": (
         "def cutmix(x, y, alpha=1.0):\n"
-        "    pass  # sample lam, derive cut size, sample center, clip to image,\n"
-        "          # paste x[perm], then recompute lam from realized area"
+        "    pass  # lam サンプル、cut size 導出、中心サンプリング、画像 bounds で clip、\n"
+        "          # x[perm] を paste、最後に実面積から lam を再計算"
     ),
 
     "solution_body": (
@@ -59,7 +57,7 @@ PROBLEM = {
         "    x2 = min(W, cx + cut_w // 2)\n"
         "    x_mixed = x.clone()\n"
         "    x_mixed[:, :, y1:y2, x1:x2] = x[perm, :, y1:y2, x1:x2]\n"
-        "    # Recompute lam from realized area\n"
+        "    # 実現された面積から lam を再計算\n"
         "    lam = 1.0 - (y2 - y1) * (x2 - x1) / (H * W)\n"
         "    return x_mixed, y, y[perm], lam"
     ),
@@ -76,10 +74,9 @@ PROBLEM = {
     ),
 
     "hint": (
-        "`cut_h = int(H * sqrt(1-λ))`. Sample center uniformly, then clip with "
-        "`y1=max(0, cy-cut_h//2)` etc. Paste `x[perm, :, y1:y2, x1:x2]` into the same slice of "
-        "`x_mixed`. **Recompute λ** from the realized `(y2-y1)*(x2-x1) / (H*W)` area before returning — "
-        "this matters when the rectangle is clipped at boundaries."
+        "`cut_h = int(H * sqrt(1-λ))`。中心を uniform サンプリングして "
+        "`y1=max(0, cy-cut_h//2)` などで clip。`x[perm, :, y1:y2, x1:x2]` を `x_mixed` の同じ "
+        "slice に paste。**λ を再計算**してから return — 境界 clipping を考慮するため。"
     ),
 
     "tests": [

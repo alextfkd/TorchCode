@@ -8,16 +8,16 @@ PROBLEM = {
     "fn_name": "label_smoothing_ce",
 
     "intro_md": (
-        "Implement **Label Smoothing Cross-Entropy** (Szegedy et al. 2016) — soften the one-hot "
-        "target so the model never gets infinitely confident. A staple of modern training recipes.\n\n"
+        "**Label Smoothing Cross-Entropy** (Szegedy et al. 2016) を実装する。one-hot target を "
+        "soften することで model が無限に自信を持つのを防ぐ。modern training recipe の定番。\n\n"
         "### Smoothed target distribution\n"
         "$$q'[c] = \\begin{cases} 1 - \\varepsilon + \\varepsilon/K & c = y \\\\ \\varepsilon/K & c \\neq y \\end{cases}$$\n\n"
-        "Then standard cross-entropy against this distribution:\n"
+        "この target に対する標準 cross-entropy：\n"
         "$$L = -\\sum_c q'[c] \\log p[c], \\quad p = \\text{softmax}(\\text{logits})$$\n\n"
-        "### Why it works\n"
-        "- Prevents over-confident predictions (the logit gap stays bounded)\n"
-        "- Acts as a regularizer — often worth ~0.3–0.5% accuracy on ImageNet\n"
-        "- Reduces calibration error\n"
+        "### なぜ効く\n"
+        "- over-confident prediction を防ぐ（logit gap が bound される）\n"
+        "- 正則化として効く — ImageNet で ~0.3-0.5% 上がる定番\n"
+        "- calibration error が下がる\n"
     ),
 
     "signature": (
@@ -29,18 +29,18 @@ PROBLEM = {
     ),
 
     "rules": [
-        "Do **NOT** use `nn.CrossEntropyLoss(label_smoothing=...)` or `F.cross_entropy(label_smoothing=...)`",
-        "Use `F.log_softmax` for numerical stability (NOT softmax → log)",
-        "When `smoothing=0`, must reduce exactly to standard cross-entropy",
-        "Returns the **mean** over the batch (scalar)",
-        "Target dist: `(1-ε) + ε/K` at the true class, `ε/K` elsewhere",
+        "`nn.CrossEntropyLoss(label_smoothing=...)` や `F.cross_entropy(label_smoothing=...)` は **使わない**",
+        "数値安定性のため `F.log_softmax` を使う（softmax → log ではない）",
+        "`smoothing=0` の時、標準 cross-entropy と完全一致すること",
+        "batch の **mean** を return（scalar）",
+        "Target dist: 正解クラスは `(1-ε) + ε/K`、それ以外は `ε/K`",
     ],
 
     "imports": "import torch\nimport torch.nn.functional as F",
 
     "template_body": (
         "def label_smoothing_ce(logits, targets, smoothing=0.1):\n"
-        "    pass  # log_softmax, build smoothed target dist, compute -sum(q * log_p), mean"
+        "    pass  # log_softmax、smoothed target dist 構築、-sum(q * log_p) → mean"
     ),
 
     "solution_body": (
@@ -48,7 +48,7 @@ PROBLEM = {
         "    K = logits.size(-1)\n"
         "    log_probs = F.log_softmax(logits, dim=-1)\n"
         "    one_hot = F.one_hot(targets, K).to(log_probs.dtype)\n"
-        "    # True class gets (1-ε) + ε/K; others get ε/K\n"
+        "    # 正解クラスは (1-ε) + ε/K、それ以外は ε/K\n"
         "    target_dist = one_hot * (1 - smoothing) + smoothing / K\n"
         "    loss = -(target_dist * log_probs).sum(dim=-1).mean()\n"
         "    return loss"
@@ -64,8 +64,9 @@ PROBLEM = {
     ),
 
     "hint": (
-        "Use `F.log_softmax(logits, dim=-1)`. Build `target_dist = one_hot * (1 - smoothing) + smoothing / K` — "
-        "true class gets `(1-ε) + ε/K`, others get `ε/K`. Loss = `-(target_dist * log_probs).sum(-1).mean()`."
+        "`F.log_softmax(logits, dim=-1)`。target dist は "
+        "`one_hot * (1 - smoothing) + smoothing / K` で構築 — 正解クラスは `(1-ε) + ε/K`、"
+        "それ以外は `ε/K`。Loss = `-(target_dist * log_probs).sum(-1).mean()`。"
     ),
 
     "tests": [

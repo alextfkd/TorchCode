@@ -8,14 +8,14 @@ PROBLEM = {
     "fn_name": "global_avg_pool",
 
     "intro_md": (
-        "Implement **Global Average Pooling** — collapse the spatial dims of a feature map to one "
-        "value per channel. The standard \"head\" for ResNet / MobileNet / EfficientNet, replacing "
-        "the large FC layer.\n\n"
+        "**Global Average Pooling** を実装する。feature map の空間次元を畳んで channel あたり "
+        "1 値にする。ResNet / MobileNet / EfficientNet など modern CNN classifier の標準 "
+        "\"head\" で、大きな FC layer を置き換える。\n\n"
         "$$\\text{out}[b, c] = \\frac{1}{H \\cdot W} \\sum_{h, w} x[b, c, h, w]$$\n\n"
-        "### Why GAP\n"
-        "- Forces each channel to represent a global concept\n"
-        "- Drastically fewer params than a Linear head\n"
-        "- Built-in translation invariance\n"
+        "### なぜ GAP\n"
+        "- 各 channel に global concept を持たせる\n"
+        "- FC head より大幅にパラメータ削減\n"
+        "- 平行移動 invariance が built-in\n"
     ),
 
     "signature": (
@@ -25,17 +25,17 @@ PROBLEM = {
     ),
 
     "rules": [
-        "Do **NOT** use `F.adaptive_avg_pool2d`, `nn.AdaptiveAvgPool2d`, or `nn.AvgPool2d`",
-        "Output shape is `(B, C)` — already flattened, ready to feed into `nn.Linear`",
-        "Must work for any `H`, `W` (not just square)",
-        "Gradient must flow back uniformly across the spatial dims",
+        "`F.adaptive_avg_pool2d`, `nn.AdaptiveAvgPool2d`, `nn.AvgPool2d` は **使わない**",
+        "Output shape は `(B, C)` — flatten 済みで、直接 `nn.Linear` に流せる形（`(B, C, 1, 1)` じゃない）",
+        "任意の `H`, `W` で動く（正方形である必要なし）",
+        "勾配が空間次元全体に均等に流れる",
     ],
 
     "imports": "import torch",
 
     "template_body": (
         "def global_avg_pool(x):\n"
-        "    pass  # mean over the (H, W) dims — one line"
+        "    pass  # (H, W) dim で mean — 1行"
     ),
 
     "solution_body": (
@@ -52,8 +52,8 @@ PROBLEM = {
     ),
 
     "hint": (
-        "One liner: `x.mean(dim=(-2, -1))`. Make sure the output is `(B, C)` — NOT `(B, C, 1, 1)` — "
-        "so it feeds directly into `nn.Linear`."
+        "1行: `x.mean(dim=(-2, -1))`。output が `(B, C)` であって `(B, C, 1, 1)` じゃないこと — "
+        "`nn.Linear` に直接流すため。"
     ),
 
     "tests": [

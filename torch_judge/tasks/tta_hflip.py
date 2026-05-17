@@ -4,7 +4,7 @@ TASK = {
     "title": "TTA (Horizontal Flip Averaging)",
     "difficulty": "Easy",
     "function_name": "tta_hflip",
-    "hint": "Two forward passes: `model(x)` and `model(x.flip(-1))`. Convert each to probabilities with `softmax(dim=-1)`, then average. Wrap in `torch.no_grad()` since this is inference.",
+    "hint": "2 つの forward pass: `model(x)` と `model(x.flip(-1))`。それぞれを `softmax(dim=-1)` で 確率に変換、平均。推論なので `torch.no_grad()` で wrap。",
     "tests": [
         {
             "name": "Output shape (B, num_classes)",

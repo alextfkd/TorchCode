@@ -8,12 +8,12 @@ PROBLEM = {
     "fn_name": "cutout",
 
     "intro_md": (
-        "Implement **Cutout** — mask a random `size × size` region of the input image with zeros. "
-        "A surprisingly effective CNN regularizer (DeVries & Taylor 2017).\n\n"
-        "For batched input, each sample gets an independently-sampled mask position. The mask "
-        "covers all channels at the chosen spatial position.\n\n"
+        "**Cutout** を実装する。入力画像のランダムな `size × size` 矩形領域を zero mask する "
+        "CNN 正則化 (DeVries & Taylor 2017)。\n\n"
+        "batch 入力では各 sample が独立な mask 位置を持つ。Mask は全 channel に対して同じ "
+        "空間位置に適用される。\n\n"
         "### Example\n```\n"
-        "x: (3, 32, 32), size=8 → one random 8×8 patch zeroed across all 3 channels\n"
+        "x: (3, 32, 32), size=8 → 全 3 channel で同じ 8×8 領域を 0 に\n"
         "```"
     ),
 
@@ -25,18 +25,18 @@ PROBLEM = {
     ),
 
     "rules": [
-        "Do **NOT** use `torchvision.transforms.RandomErasing`",
-        "Mask is a `size × size` square at a random position, **fully inside** the image",
-        "Mask is applied across ALL channels at the chosen spatial position",
-        "For batched input, each sample gets an **independent** mask position",
-        "Must NOT modify the input in-place — return a new tensor",
+        "`torchvision.transforms.RandomErasing` は **使わない**",
+        "Mask は `size × size` の正方形、画像内に **完全に収まる** ように配置",
+        "全 channel の同じ空間位置に適用",
+        "batch 入力では各 sample が **独立** な mask 位置",
+        "input を in-place で改変しない（新規 tensor を return）",
     ],
 
     "imports": "import torch",
 
     "template_body": (
         "def cutout(x, size):\n"
-        "    pass  # clone input, sample (i, j) per sample, set out[..., i:i+size, j:j+size] = 0"
+        "    pass  # input を clone、sample ごとに (i, j) sampling、out[..., i:i+size, j:j+size] = 0"
     ),
 
     "solution_body": (
@@ -65,8 +65,8 @@ PROBLEM = {
     ),
 
     "hint": (
-        "Clone the input first to avoid in-place modification. Sample (i, j) in `[0, H-size+1)`. "
-        "The mask covers all channels at the chosen spatial slice, so zeros per sample = `C * size * size`."
+        "先に clone して in-place 改変を回避。`(i, j)` を `[0, H-size+1)` でサンプル。"
+        "mask は全 channel の同じ空間 slice に適用するので、sample あたりの zero 数 = `C * size * size`。"
     ),
 
     "tests": [

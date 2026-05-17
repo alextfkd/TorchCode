@@ -1,10 +1,10 @@
-"""2D Max Pooling task."""
+"""2D Max Pooling task — AUTO-GENERATED from problem_specs/maxpool2d.py. Do not edit directly."""
 
 TASK = {
     "title": "2D Max Pooling",
     "difficulty": "Medium",
     "function_name": "my_max_pool2d",
-    "hint": "Extract patches with x.unfold(2, k, s).unfold(3, k, s) to get shape (B, C, H_out, W_out, kH, kW), then take max over the last two dims. For padding, pad with float('-inf') (NOT zero) so negative inputs aren't dominated by the pad value.",
+    "hint": "`x.unfold(2, k, s).unfold(3, k, s)` で patch を取って shape `(B, C, H_out, W_out, kH, kW)`、最後の 2 dim で max。padding は `float('-inf')` で （NOT 0 — negative input が pad に負けるため）。",
     "tests": [
         {
             "name": "Output shape (default stride)",

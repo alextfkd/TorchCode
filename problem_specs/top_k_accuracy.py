@@ -8,13 +8,13 @@ PROBLEM = {
     "fn_name": "top_k_accuracy",
 
     "intro_md": (
-        "Implement **top-k accuracy** — the fraction of samples where the true label is among the "
-        "model's top-k predictions. Standard for ImageNet (top-1 / top-5) and most evaluation pipelines.\n\n"
+        "**Top-k accuracy** を実装する。各 sample で true label が model の top-k 予測に "
+        "含まれている割合。ImageNet (top-1 / top-5) や多くの評価 pipeline で標準。\n\n"
         "$$\\text{acc@k} = \\frac{1}{B} \\sum_b \\mathbb{1}[y_b \\in \\text{top-k}(\\text{logits}_b)]$$\n\n"
-        "### Why top-k\n"
-        "- **top-1**: strict — what most people mean by \"accuracy\"\n"
-        "- **top-5**: more forgiving for fine-grained tasks (ImageNet has many similar dog breeds)\n"
-        "- top-5 is always ≥ top-1 (monotone in k)\n"
+        "### なぜ top-k\n"
+        "- **top-1**: 厳しい — \"精度\" と言ったら普通これ\n"
+        "- **top-5**: fine-grained task で許容的（ImageNet には犬種が複数あったりする）\n"
+        "- top-5 は常に ≥ top-1（k に対して monotone）\n"
     ),
 
     "signature": (
@@ -26,24 +26,24 @@ PROBLEM = {
     ),
 
     "rules": [
-        "Use `tensor.topk(k, dim=-1)` to get the top-k indices",
-        "A sample is correct if `targets[b]` matches **any** of the top-k indices",
-        "Return as a Python float (call `.item()`) — directly logable",
-        "Clamp `k` to `num_classes` so `k > K` doesn't error (always 100% in that case)",
+        "`tensor.topk(k, dim=-1)` で top-k indices を取得",
+        "`targets[b]` が top-k indices の **いずれか**と一致したら正解扱い",
+        "Python float (`.item()`) で return — 直接 log できる",
+        "`k > K_classes` でエラーにならないように clamp（その場合は 100%）",
     ],
 
     "imports": "import torch",
 
     "template_body": (
         "def top_k_accuracy(logits, targets, k=1):\n"
-        "    pass  # topk indices, compare against targets.unsqueeze(-1), .any() over k, mean.item()"
+        "    pass  # topk indices → targets.unsqueeze(-1) と比較 → .any() → mean().item()"
     ),
 
     "solution_body": (
         "def top_k_accuracy(logits, targets, k=1):\n"
         "    k = min(k, logits.size(-1))\n"
         "    _, topk_indices = logits.topk(k, dim=-1)\n"
-        "    # topk_indices: (B, k); compare with targets broadcast to (B, 1)\n"
+        "    # topk_indices: (B, k); targets を (B, 1) に broadcast して比較\n"
         "    correct = (topk_indices == targets.unsqueeze(-1)).any(dim=-1)\n"
         "    return correct.float().mean().item()"
     ),
@@ -58,9 +58,9 @@ PROBLEM = {
     ),
 
     "hint": (
-        "`logits.topk(k, dim=-1)` returns `(values, indices)`. Compare `indices` (shape `(B, k)`) "
-        "with `targets.unsqueeze(-1)` (shape `(B, 1)`) — `.any(dim=-1)` then `.float().mean().item()` "
-        "gives the accuracy as a float."
+        "`logits.topk(k, dim=-1)` は `(values, indices)` を返す。`indices` (shape `(B, k)`) と "
+        "`targets.unsqueeze(-1)` (shape `(B, 1)`) を比較 — `.any(dim=-1)` → "
+        "`.float().mean().item()` で float の accuracy。"
     ),
 
     "tests": [

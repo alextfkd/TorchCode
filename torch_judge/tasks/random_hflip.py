@@ -4,7 +4,7 @@ TASK = {
     "title": "Random Horizontal Flip",
     "difficulty": "Easy",
     "function_name": "random_horizontal_flip",
-    "hint": "For batched input, sample a Bernoulli mask of length B (`torch.rand(B) < p`), then flip x along the last dim only for the selected samples. Use `x.clone()` for the output and write back with fancy indexing: `out[mask] = x[mask].flip(-1)`.",
+    "hint": "batch 入力では長さ B の Bernoulli mask (`torch.rand(B) < p`) をサンプルし、選ばれた sample だけ最後の dim で flip。`x.clone()` を作って `out[mask] = x[mask].flip(-1)` の fancy indexing で書き戻す。",
     "tests": [
         {
             "name": "Shape preserved (both (C,H,W) and (B,C,H,W))",

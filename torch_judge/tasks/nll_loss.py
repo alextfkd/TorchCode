@@ -4,7 +4,7 @@ TASK = {
     "title": "Negative Log-Likelihood Loss",
     "difficulty": "Easy",
     "function_name": "my_nll_loss",
-    "hint": "Use advanced indexing: `log_probs[torch.arange(B), targets]` gives the log-prob at the correct class for each sample. Negate and take mean.",
+    "hint": "Advanced indexing: `log_probs[torch.arange(B), targets]` で各 sample の正解クラスの log-prob を取得。負にして mean。",
     "tests": [
         {
             "name": "Returns scalar",

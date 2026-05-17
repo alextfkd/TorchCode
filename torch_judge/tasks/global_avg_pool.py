@@ -4,7 +4,7 @@ TASK = {
     "title": "Global Average Pooling",
     "difficulty": "Easy",
     "function_name": "global_avg_pool",
-    "hint": "One liner: `x.mean(dim=(-2, -1))`. Make sure the output is `(B, C)` — NOT `(B, C, 1, 1)` — so it feeds directly into `nn.Linear`.",
+    "hint": "1行: `x.mean(dim=(-2, -1))`。output が `(B, C)` であって `(B, C, 1, 1)` じゃないこと — `nn.Linear` に直接流すため。",
     "tests": [
         {
             "name": "Output shape (B, C), not (B, C, 1, 1)",

@@ -4,7 +4,7 @@ TASK = {
     "title": "CutMix",
     "difficulty": "Medium",
     "function_name": "cutmix",
-    "hint": "`cut_h = int(H * sqrt(1-λ))`. Sample center uniformly, then clip with `y1=max(0, cy-cut_h//2)` etc. Paste `x[perm, :, y1:y2, x1:x2]` into the same slice of `x_mixed`. **Recompute λ** from the realized `(y2-y1)*(x2-x1) / (H*W)` area before returning — this matters when the rectangle is clipped at boundaries.",
+    "hint": "`cut_h = int(H * sqrt(1-λ))`。中心を uniform サンプリングして `y1=max(0, cy-cut_h//2)` などで clip。`x[perm, :, y1:y2, x1:x2]` を `x_mixed` の同じ slice に paste。**λ を再計算**してから return — 境界 clipping を考慮するため。",
     "tests": [
         {
             "name": "Output is a 4-tuple with correct shapes",

@@ -4,7 +4,7 @@ TASK = {
     "title": "Mixup",
     "difficulty": "Medium",
     "function_name": "mixup",
-    "hint": "Use `torch.distributions.Beta(alpha, alpha).sample().item()` for λ as a Python float. `torch.randperm(B)` gives the shuffle. Return `(x_mixed, y, y[perm], lam)` — the loss is computed externally as `λ*CE(pred, y_a) + (1-λ)*CE(pred, y_b)`.",
+    "hint": "`torch.distributions.Beta(alpha, alpha).sample().item()` で λ を Python float で取得。`torch.randperm(B)` で shuffle。`(x_mixed, y, y[perm], lam)` を return — loss は外で `λ*CE(pred, y_a) + (1-λ)*CE(pred, y_b)` の形で組む。",
     "tests": [
         {
             "name": "Output is a 4-tuple with correct shapes",

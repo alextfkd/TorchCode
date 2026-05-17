@@ -8,11 +8,11 @@ PROBLEM = {
     "fn_name": "random_crop",
 
     "intro_md": (
-        "Implement **random crop with zero-padding** — the standard CIFAR-10 trick: pad the image "
-        "by 4 pixels, then random-crop back to 32×32.\n\n"
-        "Adds translation invariance to training data with essentially zero compute cost.\n\n"
+        "**Random Crop with Zero Padding** を実装する。CIFAR-10 の定石: 4 pixel 分 zero pad "
+        "してから 32×32 に random crop。\n\n"
+        "計算コストほぼゼロで学習データに平行移動 invariance を追加できる。\n\n"
         "### Example\n```\n"
-        "x: (3, 32, 32), padding=4 → padded to (3, 40, 40) → cropped to (3, 32, 32) at random offset\n"
+        "x: (3, 32, 32), padding=4 → (3, 40, 40) に pad → random offset で (3, 32, 32) 切り出し\n"
         "```"
     ),
 
@@ -25,18 +25,18 @@ PROBLEM = {
     ),
 
     "rules": [
-        "Do **NOT** use `torchvision.transforms.RandomCrop`",
-        "Pad with zeros first (`F.pad`), then random crop of `size × size`",
-        "Support both `(C, H, W)` and `(B, C, H, W)`",
-        "For batched input, each sample cropped at an **independently-sampled** offset",
-        "`size` is a single int (square output)",
+        "`torchvision.transforms.RandomCrop` は **使わない**",
+        "最初に zero pad (`F.pad`) してから `size × size` で random crop",
+        "`(C, H, W)` と `(B, C, H, W)` 両方をサポート",
+        "batch 入力では各 sample が **独立** な offset で crop",
+        "`size` は int 1個（正方形 output）",
     ],
 
     "imports": "import torch\nimport torch.nn.functional as F",
 
     "template_body": (
         "def random_crop(x, size, padding=0):\n"
-        "    pass  # F.pad first, then sample (i, j) and slice x[..., i:i+size, j:j+size]"
+        "    pass  # F.pad → (i, j) sampling → slice x[..., i:i+size, j:j+size]"
     ),
 
     "solution_body": (
@@ -48,7 +48,7 @@ PROBLEM = {
         "        i = torch.randint(0, H - size + 1, (1,)).item()\n"
         "        j = torch.randint(0, W - size + 1, (1,)).item()\n"
         "        return x[:, i:i+size, j:j+size]\n"
-        "    # (B, C, H, W) — per-sample offsets\n"
+        "    # (B, C, H, W) — per-sample offset\n"
         "    B = x.shape[0]\n"
         "    H, W = x.shape[-2], x.shape[-1]\n"
         "    out = torch.empty(B, x.shape[1], size, size, dtype=x.dtype, device=x.device)\n"
@@ -68,9 +68,9 @@ PROBLEM = {
     ),
 
     "hint": (
-        "After F.pad, sample (i, j) uniformly in `[0, H_padded - size + 1)` and slice "
-        "`x[..., i:i+size, j:j+size]`. For batched input, sample (i, j) **per sample** so each gets "
-        "a different crop."
+        "`F.pad` の後、`(i, j)` を `[0, H_padded - size + 1)` から uniform にサンプリングして "
+        "`x[..., i:i+size, j:j+size]` で切る。batch の場合は **sample ごとに** `(i, j)` をサンプリング、"
+        "各 sample が違う crop になるようにする。"
     ),
 
     "tests": [

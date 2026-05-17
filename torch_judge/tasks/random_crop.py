@@ -4,7 +4,7 @@ TASK = {
     "title": "Random Crop with Padding",
     "difficulty": "Easy",
     "function_name": "random_crop",
-    "hint": "After F.pad, sample (i, j) uniformly in `[0, H_padded - size + 1)` and slice `x[..., i:i+size, j:j+size]`. For batched input, sample (i, j) **per sample** so each gets a different crop.",
+    "hint": "`F.pad` の後、`(i, j)` を `[0, H_padded - size + 1)` から uniform にサンプリングして `x[..., i:i+size, j:j+size]` で切る。batch の場合は **sample ごとに** `(i, j)` をサンプリング、各 sample が違う crop になるようにする。",
     "tests": [
         {
             "name": "Output shape (B, C, size, size)",

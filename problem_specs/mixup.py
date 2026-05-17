@@ -8,12 +8,12 @@ PROBLEM = {
     "fn_name": "mixup",
 
     "intro_md": (
-        "Implement **Mixup** (Zhang et al. 2017) — linearly interpolate pairs of examples and their "
-        "labels. A frequent component of top CIFAR-10 / ImageNet recipes.\n\n"
-        "$$\\tilde{x} = \\lambda x + (1-\\lambda) x_{\\text{perm}}, \\quad \\lambda \\sim \\text{Beta}(\\alpha, \\alpha)$$\n\n"
-        "### The 4-tuple interface\n"
-        "The standard PyTorch interface returns both labels and the mixing coefficient, so the loss "
-        "can be computed externally:\n"
+        "**Mixup** (Zhang et al. 2017) を実装する。サンプルペアと label を線形補間する "
+        "augmentation。CIFAR-10 / ImageNet 上位レシピの常連。\n\n"
+        "$$\\tilde{x} = \\lambda x + (1-\\lambda) x_{\\text{perm}}, \\quad "
+        "\\lambda \\sim \\text{Beta}(\\alpha, \\alpha)$$\n\n"
+        "### 4-tuple interface\n"
+        "標準的な PyTorch interface は両 label と mixing 係数を返し、loss は外で計算する：\n"
         "```python\n"
         "x_mix, y_a, y_b, lam = mixup(x, y)\n"
         "loss = lam * CE(model(x_mix), y_a) + (1 - lam) * CE(model(x_mix), y_b)\n"
@@ -29,10 +29,10 @@ PROBLEM = {
     ),
 
     "rules": [
-        "Sample `λ ~ Beta(α, α)` — use `torch.distributions.Beta(α, α).sample().item()`",
-        "Permute the batch with `torch.randperm(B)`",
-        "Return a **4-tuple** `(x_mixed, y_a, y_b, lam)`",
-        "`y_a` is the original `y`, `y_b` is `y[perm]`",
+        "`λ ~ Beta(α, α)` をサンプル — `torch.distributions.Beta(α, α).sample().item()` を使う",
+        "`torch.randperm(B)` で batch を permute",
+        "**4-tuple** `(x_mixed, y_a, y_b, lam)` を return",
+        "`y_a` は元の `y`、`y_b` は `y[perm]`",
         "`x_mixed = lam * x + (1 - lam) * x[perm]`",
     ],
 
@@ -40,7 +40,7 @@ PROBLEM = {
 
     "template_body": (
         "def mixup(x, y, alpha=1.0):\n"
-        "    pass  # sample lam ~ Beta(α,α), perm = randperm(B), then mix x and y"
+        "    pass  # lam ~ Beta(α,α) サンプル、perm = randperm(B)、x と y を mix"
     ),
 
     "solution_body": (
@@ -63,9 +63,9 @@ PROBLEM = {
     ),
 
     "hint": (
-        "Use `torch.distributions.Beta(alpha, alpha).sample().item()` for λ as a Python float. "
-        "`torch.randperm(B)` gives the shuffle. Return `(x_mixed, y, y[perm], lam)` — the loss is "
-        "computed externally as `λ*CE(pred, y_a) + (1-λ)*CE(pred, y_b)`."
+        "`torch.distributions.Beta(alpha, alpha).sample().item()` で λ を Python float で取得。"
+        "`torch.randperm(B)` で shuffle。`(x_mixed, y, y[perm], lam)` を return — loss は外で "
+        "`λ*CE(pred, y_a) + (1-λ)*CE(pred, y_b)` の形で組む。"
     ),
 
     "tests": [

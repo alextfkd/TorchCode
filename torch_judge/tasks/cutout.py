@@ -4,7 +4,7 @@ TASK = {
     "title": "Cutout / RandomErasing",
     "difficulty": "Medium",
     "function_name": "cutout",
-    "hint": "Clone the input first to avoid in-place modification. Sample (i, j) in `[0, H-size+1)`. The mask covers all channels at the chosen spatial slice, so zeros per sample = `C * size * size`.",
+    "hint": "先に clone して in-place 改変を回避。`(i, j)` を `[0, H-size+1)` でサンプル。mask は全 channel の同じ空間 slice に適用するので、sample あたりの zero 数 = `C * size * size`。",
     "tests": [
         {
             "name": "Shape preserved",

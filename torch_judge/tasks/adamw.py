@@ -4,7 +4,7 @@ TASK = {
     "title": "AdamW (Decoupled Weight Decay)",
     "difficulty": "Hard",
     "function_name": "MyAdamW",
-    "hint": "**Order matters**: apply decoupled WD (`p *= (1 - lr*wd)`) BEFORE the Adam moment update. Increment `t` at the start of `step()`. Bias-correct with `1 - β^t`. Use `p.addcdiv_(m_hat, v_hat.sqrt() + eps, value=-lr)` for the fused in-place update. Skip params with `grad is None` (do NOT apply WD to them either — that's what torch.optim.AdamW does).",
+    "hint": "**順序重要**: decoupled WD (`p *= (1 - lr*wd)`) を Adam moment update の **前** に適用。`step()` の最初に `t += 1`。Bias correction は `1 - β^t`。`p.addcdiv_(m_hat, v_hat.sqrt() + eps, value=-lr)` で fused in-place update。`grad is None` の param は skip（WD も skip — `torch.optim.AdamW` の挙動）。",
     "tests": [
         {
             "name": "Has step() and zero_grad() methods",

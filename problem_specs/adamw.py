@@ -8,18 +8,19 @@ PROBLEM = {
     "fn_name": "MyAdamW",
 
     "intro_md": (
-        "Implement **AdamW** (Loshchilov & Hutter 2019) — Adam with **decoupled weight decay**. "
-        "The default modern choice for training Transformers.\n\n"
-        "### The decoupled twist\n"
-        "Plain Adam + L2 regularization adds `λp` to the gradient *before* the moment updates, "
-        "which means the L2 term is divided by `√v_hat` — different weights get different effective "
-        "decay rates. AdamW applies decay **directly to the parameter** after the Adam update, so "
-        "every weight gets the same effective decay:\n\n"
+        "**AdamW** (Loshchilov & Hutter 2019) を実装する。Adam + **decoupled weight decay**。"
+        "Transformer 学習の modern default。\n\n"
+        "### Decoupled の捻り\n"
+        "plain Adam + L2 正則化は `λp` を moment update の **前** に gradient に足すので、"
+        "L2 項が `√v_hat` で割られてしまう — 各 weight で実効 decay rate が変わる。"
+        "AdamW は Adam update の後で decay を **param に直接** 適用するので、全 weight で "
+        "実効 decay rate が同じになる：\n\n"
         "$$p \\leftarrow p \\cdot (1 - \\text{lr} \\cdot \\lambda)$$\n"
         "$$p \\leftarrow p - \\text{lr} \\cdot \\hat{m} / (\\sqrt{\\hat{v}} + \\varepsilon)$$\n\n"
-        "### Killer test (the interview line)\n"
-        "With `weight_decay > 0` and **zero gradients**, AdamW still shrinks the params (decoupled "
-        "WD acts on `p` regardless of `g`). Plain Adam + L2 would do nothing in that case.\n"
+        "### Killer test (interview の決め台詞)\n"
+        "`weight_decay > 0` で **gradient = 0** でも、AdamW は param を縮める"
+        "（decoupled WD は `g` に依らず `p` に作用）。plain Adam + L2 だとそのケースで何もしない。"
+        "これが両者を区別する。\n"
     ),
 
     "signature": (
@@ -30,12 +31,12 @@ PROBLEM = {
     ),
 
     "rules": [
-        "Do **NOT** use `torch.optim.AdamW` or `torch.optim.Adam`",
-        "Apply decoupled WD: `p *= (1 - lr * weight_decay)` to the param (NOT the gradient)",
-        "Then Adam: m, v EMAs with bias correction, then `p -= lr * m_hat / (sqrt(v_hat) + eps)`",
-        "Initialize `m, v` to zeros and step counter `t = 0`; increment `t` at the start of each step",
-        "Skip params with `p.grad is None` (do NOT apply WD to them either — matches torch.optim.AdamW)",
-        "Wrap `step()` in `@torch.no_grad()`",
+        "`torch.optim.AdamW` や `torch.optim.Adam` は **使わない**",
+        "Decoupled WD: `p *= (1 - lr * weight_decay)` を param に適用（gradient ではない）",
+        "その後 Adam: m, v EMA + bias correction、`p -= lr * m_hat / (sqrt(v_hat) + eps)`",
+        "`m, v` を zeros で、step counter `t = 0` で初期化。`step()` の最初に `t += 1`",
+        "`p.grad is None` の param は skip（WD も適用しない — `torch.optim.AdamW` の挙動に合わせる）",
+        "`step()` を `@torch.no_grad()` で wrap",
     ],
 
     "imports": "import torch",
@@ -43,13 +44,13 @@ PROBLEM = {
     "template_body": (
         "class MyAdamW:\n"
         "    def __init__(self, params, lr=1e-3, betas=(0.9, 0.999), eps=1e-8, weight_decay=0.01):\n"
-        "        pass  # store hyperparams; init m=[zeros], v=[zeros], t=0\n"
+        "        pass  # hyperparam 保存、m=[zeros], v=[zeros], t=0 で初期化\n"
         "    \n"
         "    def zero_grad(self):\n"
         "        pass\n"
         "    \n"
         "    def step(self):\n"
-        "        pass  # t += 1; for each (p, m, v) with p.grad is not None:\n"
+        "        pass  # t += 1; 各 (p, m, v) で p.grad is not None なら:\n"
         "              #   decoupled WD: p *= (1 - lr*wd)\n"
         "              #   m = β1*m + (1-β1)*g; v = β2*v + (1-β2)*g²\n"
         "              #   m_hat = m / (1 - β1^t); v_hat = v / (1 - β2^t)\n"
@@ -82,7 +83,7 @@ PROBLEM = {
         "        for p, m, v in zip(self.params, self.m, self.v):\n"
         "            if p.grad is None:\n"
         "                continue\n"
-        "            # Decoupled weight decay — applied to PARAM, not gradient\n"
+        "            # Decoupled weight decay — gradient じゃなく PARAM に適用\n"
         "            if self.weight_decay != 0:\n"
         "                p.mul_(1 - self.lr * self.weight_decay)\n"
         "            g = p.grad\n"
@@ -107,10 +108,10 @@ PROBLEM = {
     ),
 
     "hint": (
-        "**Order matters**: apply decoupled WD (`p *= (1 - lr*wd)`) BEFORE the Adam moment update. "
-        "Increment `t` at the start of `step()`. Bias-correct with `1 - β^t`. "
-        "Use `p.addcdiv_(m_hat, v_hat.sqrt() + eps, value=-lr)` for the fused in-place update. "
-        "Skip params with `grad is None` (do NOT apply WD to them either — that's what torch.optim.AdamW does)."
+        "**順序重要**: decoupled WD (`p *= (1 - lr*wd)`) を Adam moment update の **前** に適用。"
+        "`step()` の最初に `t += 1`。Bias correction は `1 - β^t`。"
+        "`p.addcdiv_(m_hat, v_hat.sqrt() + eps, value=-lr)` で fused in-place update。"
+        "`grad is None` の param は skip（WD も skip — `torch.optim.AdamW` の挙動）。"
     ),
 
     "tests": [

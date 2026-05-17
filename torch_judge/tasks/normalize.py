@@ -4,7 +4,7 @@ TASK = {
     "title": "Per-Channel Normalize",
     "difficulty": "Easy",
     "function_name": "my_normalize",
-    "hint": "Convert mean/std to tensors with the same dtype/device as x (torch.as_tensor handles tuple/list/tensor uniformly), then reshape to (C, 1, 1) so broadcasting works for both (C, H, W) and (B, C, H, W) inputs.",
+    "hint": "`torch.as_tensor` で mean/std を x と同じ dtype/device の tensor に変換（tuple/list/tensor を一律で扱える）。それを `(C, 1, 1)` に reshape すれば `(C, H, W)` と `(B, C, H, W)` 両方で broadcast が効く。",
     "tests": [
         {
             "name": "Shape preserved (B, C, H, W)",

@@ -4,7 +4,7 @@ TASK = {
     "title": "2D Average Pooling",
     "difficulty": "Easy",
     "function_name": "my_avg_pool2d",
-    "hint": "Same `unfold(2, k, s).unfold(3, k, s)` trick as MaxPool, but use `.mean(dim=(-1, -2))` instead of `.amax(...)`. Pad with zeros (default `F.pad`), and the zero-pad values get included in the mean — that matches PyTorch's `count_include_pad=True` default.",
+    "hint": "MaxPool と同じ `unfold(2, k, s).unfold(3, k, s)` を使うが、`.amax(...)` の代わりに `.mean(dim=(-1, -2))`。zero pad で `F.pad`（default）、zero-pad 値は mean に含まれる — PyTorch の `count_include_pad=True` default 挙動。",
     "tests": [
         {
             "name": "Output shape (default stride)",

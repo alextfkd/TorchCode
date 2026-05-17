@@ -4,7 +4,7 @@ TASK = {
     "title": "Top-k Accuracy",
     "difficulty": "Easy",
     "function_name": "top_k_accuracy",
-    "hint": "`logits.topk(k, dim=-1)` returns `(values, indices)`. Compare `indices` (shape `(B, k)`) with `targets.unsqueeze(-1)` (shape `(B, 1)`) — `.any(dim=-1)` then `.float().mean().item()` gives the accuracy as a float.",
+    "hint": "`logits.topk(k, dim=-1)` は `(values, indices)` を返す。`indices` (shape `(B, k)`) と `targets.unsqueeze(-1)` (shape `(B, 1)`) を比較 — `.any(dim=-1)` → `.float().mean().item()` で float の accuracy。",
     "tests": [
         {
             "name": "All correct → 1.0",

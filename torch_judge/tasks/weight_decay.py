@@ -4,7 +4,7 @@ TASK = {
     "title": "Weight Decay (L2 in gradient)",
     "difficulty": "Easy",
     "function_name": "apply_weight_decay",
-    "hint": "Single-tensor case: wrap in a list. `weight_decay=0` fast path. For each param: `p.grad.add_(p, alpha=weight_decay)` is equivalent to `p.grad += weight_decay * p`. Use `@torch.no_grad()` since we're modifying `.grad` outside autograd.",
+    "hint": "Single tensor case は list で wrap。`weight_decay=0` の fast path。各 param で `p.grad.add_(p, alpha=weight_decay)` は `p.grad += weight_decay * p` と等価。`.grad` を autograd 外で modify するので `@torch.no_grad()`。",
     "tests": [
         {
             "name": "Adds weight_decay * p to grad",

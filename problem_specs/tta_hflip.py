@@ -8,13 +8,13 @@ PROBLEM = {
     "fn_name": "tta_hflip",
 
     "intro_md": (
-        "Implement **Test-Time Augmentation** with horizontal flip — run the model on both `x` and "
-        "`x.flip(-1)`, then **average the softmax probabilities** (not the logits). A free 0.3–1.0% "
-        "accuracy bump for image classification.\n\n"
-        "### Standard practice — probability-space averaging\n"
-        "Averaging *after* softmax (rather than averaging logits and then softmaxing) treats each "
-        "TTA branch as an independent classifier and ensembles their predictions. This is the "
-        "convention in most Kaggle / paper implementations.\n"
+        "**Test-Time Augmentation** with horizontal flip を実装する。model を `x` と "
+        "`x.flip(-1)` の両方で走らせ、softmax 確率を **平均**（logit じゃない）。"
+        "image classification で 0.3〜1.0% タダで上がる。\n\n"
+        "### 標準作法 — probability-space averaging\n"
+        "softmax の **後**で平均する（logit を平均してから softmax するんじゃない）。"
+        "各 TTA 分岐を独立 classifier と見て predictions を ensemble する流儀。"
+        "Kaggle / 論文の慣例。\n"
     ),
 
     "signature": (
@@ -25,17 +25,17 @@ PROBLEM = {
     ),
 
     "rules": [
-        "Apply softmax **before** averaging (probability-space ensemble, not logit-space)",
-        "Wrap inference in `torch.no_grad()` — no autograd tape during TTA",
-        "Returns *probabilities* (each row sums to 1), not logits",
-        "Do NOT modify model state (assume caller already called `model.eval()`)",
+        "softmax を **先に**適用してから平均（probability-space ensemble、logit-space ではない）",
+        "`torch.no_grad()` で wrap — 推論なので autograd tape 不要",
+        "*確率* (各行 sum=1) を return、logit ではない",
+        "model state を変更しない（caller が `model.eval()` 済みと仮定）",
     ],
 
     "imports": "import torch\nimport torch.nn as nn",
 
     "template_body": (
         "def tta_hflip(model, x):\n"
-        "    pass  # softmax(model(x)) + softmax(model(x.flip(-1))) / 2, all under no_grad"
+        "    pass  # softmax(model(x)) + softmax(model(x.flip(-1))) / 2、all under no_grad"
     ),
 
     "solution_body": (
@@ -64,8 +64,8 @@ PROBLEM = {
     ),
 
     "hint": (
-        "Two forward passes: `model(x)` and `model(x.flip(-1))`. Convert each to probabilities "
-        "with `softmax(dim=-1)`, then average. Wrap in `torch.no_grad()` since this is inference."
+        "2 つの forward pass: `model(x)` と `model(x.flip(-1))`。それぞれを `softmax(dim=-1)` で "
+        "確率に変換、平均。推論なので `torch.no_grad()` で wrap。"
     ),
 
     "tests": [
