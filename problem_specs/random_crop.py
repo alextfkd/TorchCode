@@ -7,6 +7,12 @@ PROBLEM = {
     "difficulty": "Easy",
     "fn_name": "random_crop",
 
+    "memo": (
+        "CIFAR-10 学習の定石。4 pixel zero pad → 32×32 random crop で平行移動 invariance を獲得。"
+    ),
+    "details": (
+        "ImageNet では `RandomResizedCrop`（scale も変える版）が標準で、より強い augmentation。\n\nTest 時には center crop で固定。Crop と Normalize (#42) は Compose で並べて、Normalize は最後 (crop 領域の値を正規化)。"
+    ),
     "intro_md": (
         "**Random Crop with Zero Padding** を実装する。CIFAR-10 の定石: 4 pixel 分 zero pad "
         "してから 32×32 に random crop。\n\n"

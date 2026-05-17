@@ -7,6 +7,12 @@ PROBLEM = {
     "difficulty": "Hard",
     "fn_name": "MyAdamW",
 
+    "memo": (
+        "Transformer 学習の事実上の標準。Adam の L2 を decoupled WD に置き換えた版で、HF Transformers のデフォルト。"
+    ),
+    "details": (
+        "Loshchilov & Hutter 2019。`p ← p · (1 - lr·λ)` を Adam update の前に適用。\n\n落とし穴: WD は通常 LayerNorm の重みや bias には適用しない（param groups で分離）。`weight_decay=0.01–0.1` が定番、cosine LR (#30) との組み合わせが Transformer レシピの基本。"
+    ),
     "intro_md": (
         "**AdamW** (Loshchilov & Hutter 2019) を実装する。Adam + **decoupled weight decay**。"
         "Transformer 学習の modern default。\n\n"

@@ -7,6 +7,12 @@ PROBLEM = {
     "difficulty": "Easy",
     "fn_name": "my_normalize",
 
+    "memo": (
+        "学習画像を channel-wise に z-score 化。CIFAR-10 / ImageNet 学習の前処理の最初に走る transform。"
+    ),
+    "details": (
+        "平均と std の値は dataset 固有 (CIFAR-10: (0.4914, 0.4822, 0.4465) 等)。\n\n事前学習済みモデルを fine-tune する場合は元 dataset の統計値に合わせる（ImageNet 学習済み → ImageNet の値）。"
+    ),
     "intro_md": (
         "**channel ごとの正規化** を実装する。CNN 学習パイプラインで一番最初に走る "
         "transform（CIFAR-10, ImageNet など）。\n\n"

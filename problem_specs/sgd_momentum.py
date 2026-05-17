@@ -7,6 +7,12 @@ PROBLEM = {
     "difficulty": "Medium",
     "fn_name": "MySGDMomentum",
 
+    "memo": (
+        "CV (ResNet, VGG, ViT 含む) で今も第一選択の optimizer。Adam より汎化性能が良いことが多い。"
+    ),
+    "details": (
+        "更新式は PyTorch 慣習で `v = μv + g; p -= lr * v`（`(1-μ)` factor なし）。\n\nNesterov 版もある (`nesterov=True`)。Cosine LR (#30) と組み合わせる ResNet レシピが定番。Transformer 系は AdamW (#56) が標準。"
+    ),
     "intro_md": (
         "**SGD with Momentum** を実装する。誰もが最初に学ぶ optimizer、今でも CNN "
         "(ResNet, VGG) では Adam と競合する。\n\n"

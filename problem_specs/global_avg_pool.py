@@ -7,6 +7,12 @@ PROBLEM = {
     "difficulty": "Easy",
     "fn_name": "global_avg_pool",
 
+    "memo": (
+        "現代 CNN classifier の標準 head。`(B, C, H, W) → (B, C)` で空間を畳む、FC layer の代替。"
+    ),
+    "details": (
+        "ResNet, MobileNet, EfficientNet など全部これ。NIN (2013) が起源。\n\n利点: param が大幅減 (`H×W×C` の FC weight が消える)、平行移動 invariance が built-in、入力サイズに依存しない。"
+    ),
     "intro_md": (
         "**Global Average Pooling** を実装する。feature map の空間次元を畳んで channel あたり "
         "1 値にする。ResNet / MobileNet / EfficientNet など modern CNN classifier の標準 "

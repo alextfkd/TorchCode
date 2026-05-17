@@ -7,6 +7,12 @@ PROBLEM = {
     "difficulty": "Medium",
     "fn_name": "mixup",
 
+    "memo": (
+        "ペア画像と label を λ : 1-λ で線形補間する augmentation。決定境界がスムーズになり、汎化が改善。"
+    ),
+    "details": (
+        "Zhang 2017。`α=0.2–1.0` の Beta 分布から λ をサンプル — `α` を上げるほど混ぜが強い (`α=1.0` で uniform)。\n\n標準 PyTorch 流: `(x_mix, y_a, y_b, lam)` を返し、loss は外で `lam*CE(y_a) + (1-lam)*CE(y_b)`。Cutout (#45)、CutMix (#47) と組み合わせ可能。"
+    ),
     "intro_md": (
         "**Mixup** (Zhang et al. 2017) を実装する。サンプルペアと label を線形補間する "
         "augmentation。CIFAR-10 / ImageNet 上位レシピの常連。\n\n"

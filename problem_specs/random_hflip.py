@@ -7,6 +7,12 @@ PROBLEM = {
     "difficulty": "Easy",
     "fn_name": "random_horizontal_flip",
 
+    "memo": (
+        "自然画像 augmentation の最定番。`p=0.5` で左右反転、学習時のみ適用。"
+    ),
+    "details": (
+        "文字や向きが意味を持つタスク (手書き数字 6/9, 矢印など) では使わない。\n\nVertical flip は航空写真や顕微鏡画像など重力に意味がない場合のみ。Test 時には flip しない (TTA #48 は別の使い方)。"
+    ),
     "intro_md": (
         "**Random Horizontal Flip** を実装する。自然画像 (CIFAR-10, ImageNet) で定番の "
         "augmentation。batch 入力では各 sample が独立に確率 `p` で flip される。\n\n"

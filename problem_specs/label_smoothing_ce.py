@@ -7,6 +7,12 @@ PROBLEM = {
     "difficulty": "Easy",
     "fn_name": "label_smoothing_ce",
 
+    "memo": (
+        "モダンな CE のデフォルト。one-hot を soft にして over-confident な予測を抑制、`ε=0.1` が定番。"
+    ),
+    "details": (
+        "Szegedy 2016。ImageNet で +0.3–0.5% の効果、calibration error も改善（モデルの自信が実際の正答率に近づく）。\n\nLLM の事前学習でも使う。`nn.CrossEntropyLoss(label_smoothing=0.1)` で一発、自前実装はその裏側を理解するための鍛錬。"
+    ),
     "intro_md": (
         "**Label Smoothing Cross-Entropy** (Szegedy et al. 2016) を実装する。one-hot target を "
         "soften することで model が無限に自信を持つのを防ぐ。modern training recipe の定番。\n\n"

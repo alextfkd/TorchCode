@@ -84,13 +84,40 @@ def load_spec(spec_path: Path) -> dict[str, Any]:
 
 
 def render_intro(p: dict[str, Any], folder: str, filename: str) -> str:
+    import re as _re
     emoji = DIFFICULTY_EMOJI.get(p["difficulty"], "")
     badge = f"[![Open In Colab]({BADGE_IMG})]({colab_url(folder, filename)})"
     rules_md = "\n".join(f"- {r}" for r in p.get("rules", []))
+
+    memo_block = ""
+    if p.get("memo"):
+        memo_block += f"> 💡 **どこで使う**：{p['memo']}"
+    if p.get("details"):
+        if memo_block:
+            memo_block += "\n\n"
+        memo_block += (
+            f"<details>\n<summary>📖 もっと詳しく</summary>\n\n"
+            f"{p['details']}\n\n</details>"
+        )
+
+    # Split intro_md at the first "### ..." section header so memo/details
+    # land right after the formula (which is in the top section), not after
+    # any sub-sections like "### Example" / "### Algorithm".
+    intro_text = p["intro_md"]
+    m = _re.search(r"\n###\s", intro_text)
+    if m and memo_block:
+        intro_top = intro_text[:m.start()].rstrip()
+        intro_bottom = intro_text[m.start():].lstrip("\n")
+        intro_combined = f"{intro_top}\n\n{memo_block}\n\n{intro_bottom}"
+    elif memo_block:
+        intro_combined = f"{intro_text.rstrip()}\n\n{memo_block}"
+    else:
+        intro_combined = intro_text
+
     return (
         f"{badge}\n\n"
         f"# {emoji} {p['difficulty']}: {p['title']}\n\n"
-        f"{p['intro_md']}\n\n"
+        f"{intro_combined}\n\n"
         f"### Signature\n```python\n{p['signature']}\n```\n\n"
         f"### Rules\n{rules_md}"
     )

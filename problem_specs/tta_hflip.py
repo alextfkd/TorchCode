@@ -7,6 +7,12 @@ PROBLEM = {
     "difficulty": "Easy",
     "fn_name": "tta_hflip",
 
+    "memo": (
+        "推論時の augmentation。test 画像と flip 版で 2 回 forward、softmax 確率を平均。"
+    ),
+    "details": (
+        "0.3–1% タダで accuracy が上がる、Kaggle の鉄板。\n\nProbability-space (softmax 後) で平均するのが標準 — logit-space (softmax 前) より自然な ensemble に。5-crop (center + 4 corner) との組み合わせも可能、推論 cost は 2x-10x になるが多くの場合元が取れる。"
+    ),
     "intro_md": (
         "**Test-Time Augmentation** with horizontal flip を実装する。model を `x` と "
         "`x.flip(-1)` の両方で走らせ、softmax 確率を **平均**（logit じゃない）。"

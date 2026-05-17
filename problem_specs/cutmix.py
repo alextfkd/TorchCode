@@ -7,6 +7,12 @@ PROBLEM = {
     "difficulty": "Medium",
     "fn_name": "cutmix",
 
+    "memo": (
+        "Mixup の幾何版。ある画像の矩形を切って別の画像に貼る、label は paste 面積比で混ぜる。"
+    ),
+    "details": (
+        "Yun 2019。Mixup より自然な合成画像、object localization のような spatial 情報を壊さない。\n\n落とし穴 (interview trap): sampled λ じゃなく、画像境界での clipping 後の **実面積** から λ を再計算してから返す — 矩形が画像端で切れることがあるため。"
+    ),
     "intro_md": (
         "**CutMix** (Yun et al. 2019) を実装する。Mixup と違って pixel 値を blend するのではなく、"
         "ある画像から矩形を **切り取って貼る**。label は paste 領域の面積比で混ぜる。\n\n"

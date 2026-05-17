@@ -7,6 +7,12 @@ PROBLEM = {
     "difficulty": "Easy",
     "fn_name": "my_nll_loss",
 
+    "memo": (
+        "CE の後半パート。log 化済みの確率分布から、正解クラスの -mean を計算。"
+    ),
+    "details": (
+        "log_softmax + NLL = CrossEntropy。分離されてる理由は: log-prob を loss と分析で使い回したい、softmax 以外（mixture model, normalizing flow）由来の log-prob にも適用したい、など。\n\n実装: advanced indexing `log_probs[arange(B), targets]`。"
+    ),
     "intro_md": (
         "**NLL Loss** を実装する。cross-entropy の後半パート。入力は **既に** `log_softmax` "
         "済みの確率で、target クラスの log-prob を pick して負の平均を取る。\n\n"

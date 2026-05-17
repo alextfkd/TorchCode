@@ -7,6 +7,12 @@ PROBLEM = {
     "difficulty": "Easy",
     "fn_name": "apply_weight_decay",
 
+    "memo": (
+        "重みを 0 に引き寄せる正則化。SGD では gradient に `λp` を足す形（L2 ペナルティ）。"
+    ),
+    "details": (
+        "loss に `(λ/2)·||p||²` を足すのと数学的に等価、ただし optimizer step で直接やる方が計算グラフを増やさない。\n\nAdam に L2 をこの形で適用すると `√v_hat` で割られて weight ごとに実効 decay が変わる → AdamW (#56) の登場。"
+    ),
     "intro_md": (
         "**Weight decay** を実装する。L2 正則化項を optimizer step の **前** に gradient に "
         "足す（SGD/L2 規約）。AdamW は別の (decoupled) formulation を使う (#56 参照)。\n\n"

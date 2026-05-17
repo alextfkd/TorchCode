@@ -7,6 +7,12 @@ PROBLEM = {
     "difficulty": "Medium",
     "fn_name": "cutout",
 
+    "memo": (
+        "学習画像の random な矩形領域を 0 で塗りつぶす augmentation。CNN を局所特徴依存にしない。"
+    ),
+    "details": (
+        "DeVries & Taylor 2017。Occlusion robustness が上がる、画像の一部が隠れても判定できる。\n\nCIFAR-10 で 16×16 マスクが定番。Mixup (#46) や CutMix (#47) と組み合わせると効果が積み増し、ただし弱い augmentation の重ねがけは収束が遅くなることも。"
+    ),
     "intro_md": (
         "**Cutout** を実装する。入力画像のランダムな `size × size` 矩形領域を zero mask する "
         "CNN 正則化 (DeVries & Taylor 2017)。\n\n"

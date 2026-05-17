@@ -7,6 +7,12 @@ PROBLEM = {
     "difficulty": "Easy",
     "fn_name": "top_k_accuracy",
 
+    "memo": (
+        "分類の評価指標。ImageNet では top-1 (厳しい) と top-5 (許容的) の両方を報告するのが慣習。"
+    ),
+    "details": (
+        "Top-5 は ImageNet のような fine-grained 1000 クラス分類で意味がある（似た犬種が大量にある）。\n\nTop-1 と Top-5 の差が大きいモデルは「正解が候補に入ってるけど確信が持てない」状態。NLP では top-k accuracy はあまり使わず perplexity を見る。"
+    ),
     "intro_md": (
         "**Top-k accuracy** を実装する。各 sample で true label が model の top-k 予測に "
         "含まれている割合。ImageNet (top-1 / top-5) や多くの評価 pipeline で標準。\n\n"

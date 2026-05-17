@@ -7,6 +7,12 @@ PROBLEM = {
     "difficulty": "Medium",
     "fn_name": "my_max_pool2d",
 
+    "memo": (
+        "Conv 後の標準的な down-sampling。最大値を残して空間サイズを半分にする。"
+    ),
+    "details": (
+        "VGG 系で頻出。最近のアーキテクチャ (ResNet 後期、ViT) は stride 付き conv で代替する設計も多い。\n\n落とし穴: padding は `-inf` で（0 だと負入力で誤る）、勾配は argmax 位置にしか流れない。"
+    ),
     "intro_md": (
         "**2D Max Pooling** を実装する。Conv2d (#22) の自然な相方で、ほぼ全 CNN block の後に "
         "来る down-sampling layer。\n\n"

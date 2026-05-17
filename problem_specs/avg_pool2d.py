@@ -7,6 +7,12 @@ PROBLEM = {
     "difficulty": "Easy",
     "fn_name": "my_avg_pool2d",
 
+    "memo": (
+        "MaxPool の smooth 版。局所平均で down-sample、blur 効果がほしいときに。"
+    ),
+    "details": (
+        "主には Global Avg Pool (#50) の形で使う、純粋な 2x2 avg pool は単体ではあまり見ない。\n\nPadding は zero、PyTorch のデフォルト `count_include_pad=True` だと pad の 0 も平均に含まれる（端で値が小さくなる）— 通常は OK。"
+    ),
     "intro_md": (
         "**2D Average Pooling** を実装する。max pooling の smooth 版で、Global Average Pooling "
         "の構成要素でもある。\n\n"
