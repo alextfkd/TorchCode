@@ -36,11 +36,11 @@ Practice implementing operators and architectures from scratch — the exact ski
 
 ---
 
-## 🎓 このフォークについて — DL基礎 W2-W5 復習トラック
+## 🎓 このフォークについて — W2-W5 練習トラック
 
-![Practice](https://img.shields.io/badge/practice-29問-orange?style=flat-square) ![Lang](https://img.shields.io/badge/lang-日本語-blue?style=flat-square) ![Base](https://img.shields.io/badge/base-duoan%2FTorchCode-lightgrey?style=flat-square)
+![Practice](https://img.shields.io/badge/practice-29問-orange?style=flat-square) ![Lang](https://img.shields.io/badge/lang-日本語-blue?style=flat-square) ![License](https://img.shields.io/badge/license-MIT-yellow?style=flat-square) ![Base](https://img.shields.io/badge/base-duoan%2FTorchCode-lightgrey?style=flat-square)
 
-**[duoan/TorchCode](https://github.com/duoan/TorchCode) のフォーク。** 松尾研 DL基礎 W2-W5 の復習用に **29 問を週ごとに整理 + 全問の解説を日本語化**。本家の 40 問に加え、DL基礎の syllabus 直結の 16 問（pooling / augmentation / 評価指標 / 現代 optimizer 系）を **spec-driven 生成インフラ** と一緒に追加。
+**[duoan/TorchCode](https://github.com/duoan/TorchCode) のフォークをベースにした自作練習問題集。** PyTorch で CNN 学習の主要トピックを W2-W5 の 4 週分に整理した **29 問を全問日本語化**。本家の 40 問に加え、典型的な CNN 学習レシピ（pooling / augmentation / 評価指標 / 現代 optimizer 系）に直結する 16 問を **spec-driven 生成インフラ** と一緒に追加。
 
 ### 週次マッピング
 
@@ -74,6 +74,10 @@ make run                                # Docker 起動
 | 週フォルダを完全リセット | （上記） | `python scripts/build_weeks.py --reset` |
 
 詳細は下記 [Architecture](#%EF%B8%8F-architecture) / [Adding Your Own Problems](#-adding-your-own-problems) も参照。
+
+### License
+
+本家 [duoan/TorchCode](https://github.com/duoan/TorchCode) は **MIT License** で公開されている。本フォークもそれを継承し MIT License で公開する。フォーク独自の追加・改変部分も MIT で利用可能。詳細は [`LICENSE`](LICENSE) を参照。
 
 ---
 

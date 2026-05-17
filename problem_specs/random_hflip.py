@@ -1,4 +1,4 @@
-"""A2 — Random Horizontal Flip (DL基礎 W4-5 transform pipeline 定番)."""
+"""A2 — Random Horizontal Flip (CNN augmentation 定番)."""
 
 PROBLEM = {
     "id": "random_hflip",

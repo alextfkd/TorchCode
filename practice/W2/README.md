@@ -1,6 +1,6 @@
 # W2 — MLP / 基本分類 / 基礎 optimization
 
-MLP の forward → activation → loss → optimizer → 評価指標 までの一周。DL基礎 W2 で組み立てた MNIST/分類パイプラインを部品ごとに自前実装。
+MLP の forward → activation → loss → optimizer → 評価指標 までの一周。基本的な MNIST / 分類パイプラインの構成部品を一つずつ自前実装する週。
 
 **8 problems.** Solve each template in place, then run the last cell `check("...")` to grade. Stuck? Open the linked solution in the rightmost column.
 

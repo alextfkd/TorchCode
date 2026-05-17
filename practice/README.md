@@ -1,6 +1,6 @@
-# Practice — DL基礎 W2-W5 復習トラック
+# Practice — W2-W5 練習トラック
 
-週ごとの練習問題セット。合計 **29 問**、TorchCode の 56 問から DL基礎の 週次内容に直結するものだけを pick up。
+週ごとの練習問題セット。合計 **29 問**、TorchCode の 56 問から CNN 学習の 主要トピックに直結するものだけを pick up。
 
 ## Weeks
 

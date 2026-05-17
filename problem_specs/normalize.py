@@ -1,4 +1,4 @@
-"""A1 — Per-Channel Normalize (DL基礎 W4-5 transform pipeline の最初)."""
+"""A1 — Per-Channel Normalize (CNN transform pipeline の最初)."""
 
 PROBLEM = {
     "id": "normalize",

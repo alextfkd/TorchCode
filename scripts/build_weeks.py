@@ -90,10 +90,10 @@ def render_week_readme(week_id: str, week_info: dict, tasks: dict) -> str:
 def render_index(mapping: dict, tasks: dict) -> str:
     total = sum(len(w["problems"]) for w in mapping.values())
     lines = [
-        "# Practice — DL基礎 W2-W5 復習トラック",
+        "# Practice — W2-W5 練習トラック",
         "",
-        f"週ごとの練習問題セット。合計 **{total} 問**、TorchCode の 56 問から DL基礎の "
-        "週次内容に直結するものだけを pick up。",
+        f"週ごとの練習問題セット。合計 **{total} 問**、TorchCode の 56 問から CNN 学習の "
+        "主要トピックに直結するものだけを pick up。",
         "",
         "## Weeks",
         "",

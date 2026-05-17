@@ -1,4 +1,4 @@
-"""DL基礎 W2-W5 復習トラック — どの問題をどの週に割り当てるか。
+"""W2-W5 練習トラック — どの問題をどの週に割り当てるか。
 
 `build_weeks.py` がこれを読んで `practice/W{n}/` を生成する。
 順番は **学習順**（最初に解くべきものから）で書く。"""
@@ -8,7 +8,7 @@ WEEK_MAPPING = {
         "title": "MLP / 基本分類 / 基礎 optimization",
         "intro": (
             "MLP の forward → activation → loss → optimizer → 評価指標 までの一周。"
-            "DL基礎 W2 で組み立てた MNIST/分類パイプラインを部品ごとに自前実装。"
+            "基本的な MNIST / 分類パイプラインの構成部品を一つずつ自前実装する週。"
         ),
         # 学習順：simplest model → layer → activation → loss → optimizer → eval
         "problems": [
