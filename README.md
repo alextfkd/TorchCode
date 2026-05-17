@@ -44,14 +44,14 @@ Practice implementing operators and architectures from scratch — the exact ski
 
 ### 週次マッピング
 
-| Week | テーマ | 問題数 | フォルダ |
-|:----:|--------|:------:|----------|
-| **W2** | MLP / 基本分類 / 基礎 optimization | 8 | [`practice/W2/`](practice/W2/) |
-| **W3** | 正則化 / 正規化 / advanced optimization | 9 | [`practice/W3/`](practice/W3/) |
-| **W4** | CNN 基礎 + 基本 transforms | 7 | [`practice/W4/`](practice/W4/) |
-| **W5** | CIFAR-10 advanced レシピ | 5 | [`practice/W5/`](practice/W5/) |
+| Week | テーマ | 問題数 | フォルダ | 1問目を Colab で開く |
+|:----:|--------|:------:|----------|:-------------------:|
+| **W2** | MLP / 基本分類 / 基礎 optimization | 8 | [`practice/W2/`](practice/W2/) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/alextfkd/TorchCode/blob/master/practice/W2/40_linear_regression.ipynb) |
+| **W3** | 正則化 / 正規化 / advanced optimization | 9 | [`practice/W3/`](practice/W3/) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/alextfkd/TorchCode/blob/master/practice/W3/20_weight_init.ipynb) |
+| **W4** | CNN 基礎 + 基本 transforms | 7 | [`practice/W4/`](practice/W4/) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/alextfkd/TorchCode/blob/master/practice/W4/22_conv2d.ipynb) |
+| **W5** | CIFAR-10 advanced レシピ | 5 | [`practice/W5/`](practice/W5/) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/alextfkd/TorchCode/blob/master/practice/W5/51_label_smoothing_ce.ipynb) |
 
-各週フォルダの `README.md` に **学習順** で問題リスト、各 `.ipynb` は実装 → `check("...")` で自動採点（5 テスト/問、計 145 テスト）。
+各週フォルダの `README.md` に **学習順** で問題リスト、各 `.ipynb` は実装 → `check("...")` で自動採点（5 テスト/問、計 145 テスト）。1 問目以外を開きたい時は各週の README から任意の `.ipynb` の Colab badge をクリック。
 
 ### 使い方
 

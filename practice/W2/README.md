@@ -6,16 +6,16 @@ MLP の forward → activation → loss → optimizer → 評価指標 までの
 
 ## Study order
 
-| Order | # | Problem | Difficulty | Solution |
-|:-----:|:-:|---------|:----------:|:--------:|
-| 1 | 40 | [`40_linear_regression.ipynb`](40_linear_regression.ipynb) — Linear Regression | Medium | [↗](../../solutions/40_linear_regression_solution.ipynb) |
-| 2 | 03 | [`03_linear.ipynb`](03_linear.ipynb) — Simple Linear Layer | Medium | [↗](../../solutions/03_linear_solution.ipynb) |
-| 3 | 01 | [`01_relu.ipynb`](01_relu.ipynb) — Implement ReLU | Easy | [↗](../../solutions/01_relu_solution.ipynb) |
-| 4 | 02 | [`02_softmax.ipynb`](02_softmax.ipynb) — Implement Softmax | Easy | [↗](../../solutions/02_softmax_solution.ipynb) |
-| 5 | 16 | [`16_cross_entropy.ipynb`](16_cross_entropy.ipynb) — Cross-Entropy Loss | Easy | [↗](../../solutions/16_cross_entropy_solution.ipynb) |
-| 6 | 53 | [`53_nll_loss.ipynb`](53_nll_loss.ipynb) — Negative Log-Likelihood Loss | Easy | [↗](../../solutions/53_nll_loss_solution.ipynb) |
-| 7 | 54 | [`54_sgd_momentum.ipynb`](54_sgd_momentum.ipynb) — SGD with Momentum | Medium | [↗](../../solutions/54_sgd_momentum_solution.ipynb) |
-| 8 | 52 | [`52_top_k_accuracy.ipynb`](52_top_k_accuracy.ipynb) — Top-k Accuracy | Easy | [↗](../../solutions/52_top_k_accuracy_solution.ipynb) |
+| Order | # | Problem | Difficulty | Solution | Colab |
+|:-----:|:-:|---------|:----------:|:--------:|:-----:|
+| 1 | 40 | [`40_linear_regression.ipynb`](40_linear_regression.ipynb) — Linear Regression | Medium | [↗](../../solutions/40_linear_regression_solution.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/alextfkd/TorchCode/blob/master/practice/W2/40_linear_regression.ipynb) |
+| 2 | 03 | [`03_linear.ipynb`](03_linear.ipynb) — Simple Linear Layer | Medium | [↗](../../solutions/03_linear_solution.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/alextfkd/TorchCode/blob/master/practice/W2/03_linear.ipynb) |
+| 3 | 01 | [`01_relu.ipynb`](01_relu.ipynb) — Implement ReLU | Easy | [↗](../../solutions/01_relu_solution.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/alextfkd/TorchCode/blob/master/practice/W2/01_relu.ipynb) |
+| 4 | 02 | [`02_softmax.ipynb`](02_softmax.ipynb) — Implement Softmax | Easy | [↗](../../solutions/02_softmax_solution.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/alextfkd/TorchCode/blob/master/practice/W2/02_softmax.ipynb) |
+| 5 | 16 | [`16_cross_entropy.ipynb`](16_cross_entropy.ipynb) — Cross-Entropy Loss | Easy | [↗](../../solutions/16_cross_entropy_solution.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/alextfkd/TorchCode/blob/master/practice/W2/16_cross_entropy.ipynb) |
+| 6 | 53 | [`53_nll_loss.ipynb`](53_nll_loss.ipynb) — Negative Log-Likelihood Loss | Easy | [↗](../../solutions/53_nll_loss_solution.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/alextfkd/TorchCode/blob/master/practice/W2/53_nll_loss.ipynb) |
+| 7 | 54 | [`54_sgd_momentum.ipynb`](54_sgd_momentum.ipynb) — SGD with Momentum | Medium | [↗](../../solutions/54_sgd_momentum_solution.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/alextfkd/TorchCode/blob/master/practice/W2/54_sgd_momentum.ipynb) |
+| 8 | 52 | [`52_top_k_accuracy.ipynb`](52_top_k_accuracy.ipynb) — Top-k Accuracy | Easy | [↗](../../solutions/52_top_k_accuracy_solution.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/alextfkd/TorchCode/blob/master/practice/W2/52_top_k_accuracy.ipynb) |
 
 ## How to use
 

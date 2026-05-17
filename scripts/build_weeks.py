@@ -27,6 +27,14 @@ TEMPLATES_DIR = ROOT / "templates"
 SOLUTIONS_DIR = ROOT / "solutions"
 MAPPING_PATH = ROOT / "scripts" / "week_mapping.py"
 
+REPO = "alextfkd/TorchCode"
+BRANCH = "master"
+COLAB_BADGE = "https://colab.research.google.com/assets/colab-badge.svg"
+
+
+def colab_url(week_id: str, file_id: str) -> str:
+    return f"https://colab.research.google.com/github/{REPO}/blob/{BRANCH}/practice/{week_id}/{file_id}.ipynb"
+
 
 def load_mapping() -> dict:
     spec = importlib.util.spec_from_file_location("week_mapping", MAPPING_PATH)
@@ -59,8 +67,8 @@ def render_week_readme(week_id: str, week_info: dict, tasks: dict) -> str:
     lines.append("")
     lines.append("## Study order")
     lines.append("")
-    lines.append("| Order | # | Problem | Difficulty | Solution |")
-    lines.append("|:-----:|:-:|---------|:----------:|:--------:|")
+    lines.append("| Order | # | Problem | Difficulty | Solution | Colab |")
+    lines.append("|:-----:|:-:|---------|:----------:|:--------:|:-----:|")
     for i, file_id in enumerate(week_info["problems"], 1):
         task_id = file_to_task_id(file_id)
         task = tasks.get(task_id)
@@ -69,7 +77,8 @@ def render_week_readme(week_id: str, week_info: dict, tasks: dict) -> str:
         num = file_id.split("_", 1)[0]
         template_link = f"[`{file_id}.ipynb`]({file_id}.ipynb)"
         solution_link = f"[↗](../../solutions/{file_id}_solution.ipynb)"
-        lines.append(f"| {i} | {num} | {template_link} — {title} | {diff} | {solution_link} |")
+        colab_cell = f"[![Open In Colab]({COLAB_BADGE})]({colab_url(week_id, file_id)})"
+        lines.append(f"| {i} | {num} | {template_link} — {title} | {diff} | {solution_link} | {colab_cell} |")
     lines.append("")
     lines.append("## How to use")
     lines.append("")
