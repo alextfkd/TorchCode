@@ -135,6 +135,18 @@ def render_solution_intro(p: dict[str, Any], folder: str, filename: str) -> str:
     return f"{badge}\n\n# Solution: {p['title']}\n\nReference solution."
 
 
+def render_solution_link(solution_filename: str) -> str:
+    """Markdown cell appended to template notebooks — link to the reference solution."""
+    colab = f"https://colab.research.google.com/github/{REPO}/blob/{BRANCH}/solutions/{solution_filename}"
+    gh = f"https://github.com/{REPO}/blob/{BRANCH}/solutions/{solution_filename}"
+    return (
+        "---\n\n"
+        "**詰まったら？** 解答を見る：\n\n"
+        f"[![Open Solution in Colab]({BADGE_IMG})]({colab}) "
+        f"または [GitHub で開く]({gh})"
+    )
+
+
 def write_task(p: dict[str, Any]) -> Path:
     """Emit torch_judge/tasks/{id}.py — the minimal runtime artifact."""
     task = {
@@ -152,6 +164,7 @@ def write_task(p: dict[str, Any]) -> Path:
 
 def write_template(p: dict[str, Any]) -> Path:
     filename = f"{p['number']:02d}_{p['id']}.ipynb"
+    solution_filename = f"{p['number']:02d}_{p['id']}_solution.ipynb"
     cells = [
         md_cell(render_intro(p, "templates", filename)),
         code_cell(COLAB_INSTALL),
@@ -159,6 +172,7 @@ def write_template(p: dict[str, Any]) -> Path:
         code_cell(f"# ✏️ YOUR IMPLEMENTATION HERE\n\n{p['template_body']}"),
         code_cell(p["demo_code"]),
         code_cell(f'# ✅ SUBMIT — Run this cell to check your solution\nfrom torch_judge import check\ncheck("{p["id"]}")'),
+        md_cell(render_solution_link(solution_filename)),
     ]
     path = TEMPLATES_DIR / filename
     path.write_text(json.dumps(nb(cells), indent=1, ensure_ascii=False), encoding="utf-8")
