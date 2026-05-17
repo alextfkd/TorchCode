@@ -99,6 +99,13 @@ def render_intro(p: dict[str, Any], folder: str, filename: str) -> str:
             f"<details>\n<summary>📖 もっと詳しく</summary>\n\n"
             f"{p['details']}\n\n</details>"
         )
+    if p.get("algorithm"):
+        if memo_block:
+            memo_block += "\n\n"
+        memo_block += (
+            f"<details>\n<summary>📐 アルゴリズム手順</summary>\n\n"
+            f"{p['algorithm']}\n\n</details>"
+        )
 
     # Split intro_md at the first "### ..." section header so memo/details
     # land right after the formula (which is in the top section), not after
