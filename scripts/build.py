@@ -19,7 +19,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-REPO = "duoan/TorchCode"
+REPO = "alextfkd/TorchCode"
 BRANCH = "master"
 ROOT = Path(__file__).resolve().parent.parent
 SPECS_DIR = ROOT / "problem_specs"
