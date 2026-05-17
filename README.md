@@ -36,6 +36,51 @@ Practice implementing operators and architectures from scratch — the exact ski
 
 ---
 
+## 🎓 このフォークについて — DL基礎 W2-W5 復習トラック
+
+![Practice](https://img.shields.io/badge/practice-29問-orange?style=flat-square) ![Lang](https://img.shields.io/badge/lang-日本語-blue?style=flat-square) ![Base](https://img.shields.io/badge/base-duoan%2FTorchCode-lightgrey?style=flat-square)
+
+**[duoan/TorchCode](https://github.com/duoan/TorchCode) のフォーク。** 松尾研 DL基礎 W2-W5 の復習用に **29 問を週ごとに整理 + 全問の解説を日本語化**。本家の 40 問に加え、DL基礎の syllabus 直結の 16 問（pooling / augmentation / 評価指標 / 現代 optimizer 系）を **spec-driven 生成インフラ** と一緒に追加。
+
+### 週次マッピング
+
+| Week | テーマ | 問題数 | フォルダ |
+|:----:|--------|:------:|----------|
+| **W2** | MLP / 基本分類 / 基礎 optimization | 8 | [`practice/W2/`](practice/W2/) |
+| **W3** | 正則化 / 正規化 / advanced optimization | 9 | [`practice/W3/`](practice/W3/) |
+| **W4** | CNN 基礎 + 基本 transforms | 7 | [`practice/W4/`](practice/W4/) |
+| **W5** | CIFAR-10 advanced レシピ | 5 | [`practice/W5/`](practice/W5/) |
+
+各週フォルダの `README.md` に **学習順** で問題リスト、各 `.ipynb` は実装 → `check("...")` で自動採点（5 テスト/問、計 145 テスト）。
+
+### 使い方
+
+**Colab で（推奨・セットアップ不要）：**
+`practice/W{n}/` 配下の `.ipynb` 右上の Colab badge をクリック → Run All → ✏️ セルに実装を書く → 最後の `check("...")` セルで採点。
+
+**ローカル（Docker / JupyterLab）：**
+```bash
+make run                                # Docker 起動
+# ブラウザで http://localhost:8888 → practice/W2/ に移動
+```
+
+### 自分で問題を増やす / マッピングを変える
+
+| やりたいこと | 編集対象 | 再生成コマンド |
+|------|----------|---------------|
+| 新規問題を追加 | `problem_specs/{id}.py` を新規作成 | `python scripts/build.py --verify` |
+| 既存問題の解説/テストを修正 | `problem_specs/{id}.py` | `python scripts/build.py --verify` |
+| 週マッピング変更 | `scripts/week_mapping.py` | `python scripts/build_weeks.py` |
+| 週フォルダを完全リセット | （上記） | `python scripts/build_weeks.py --reset` |
+
+詳細は下記 [Architecture](#%EF%B8%8F-architecture) / [Adding Your Own Problems](#-adding-your-own-problems) も参照。
+
+---
+
+以下は **本家 TorchCode の README**（英語、56 問全体の解説）。フォーク独自の追加問題は #41 以降。
+
+---
+
 ## 🎯 Why TorchCode?
 
 Top companies (Meta, Google DeepMind, OpenAI, etc.) expect ML engineers to implement core operations **from memory on a whiteboard**. Reading papers isn't enough — you need to write `softmax`, `LayerNorm`, `MultiHeadAttention`, and full Transformer blocks code.
